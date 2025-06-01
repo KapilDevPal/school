@@ -1,0 +1,12 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-800">New Notice</h1>
+      <%= link_to 'Back to Notices', schools_notices_path, class: 'text-blue-600 hover:text-blue-900' %>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <%= render 'form', notice: @notice %>
+    </div>
+  </div>
+</div> 

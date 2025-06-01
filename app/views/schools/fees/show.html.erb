@@ -1,0 +1,49 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-900">Fee Details</h1>
+      <div class="space-x-3">
+        <%= link_to 'Edit', edit_schools_fee_path(@fee), class: "text-indigo-600 hover:text-indigo-900" %>
+        <%= link_to 'Back to Fees', schools_fees_path, class: "text-blue-600 hover:text-blue-900" %>
+      </div>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+      <div class="px-4 py-5 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Fee Information</h3>
+      </div>
+      <div class="border-t border-gray-200">
+        <dl>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Student</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @fee.student.full_name %></dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Amount</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">$<%= @fee.amount %></dd>
+          </div>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Due Date</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @fee.due_date.strftime("%B %d, %Y") %></dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Status</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= @fee.status == 'paid' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                <%= @fee.status.titleize %>
+              </span>
+            </dd>
+          </div>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Payment Date</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @fee.payment_date&.strftime("%B %d, %Y") %></dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Payment Method</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @fee.payment_method&.titleize %></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div> 

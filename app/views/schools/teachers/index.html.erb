@@ -1,0 +1,41 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Teachers</h1>
+    <%= link_to 'Add New Teacher', new_schools_teacher_path, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @teachers.each do |teacher| %>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                <%= "#{teacher.first_name} #{teacher.last_name}" %>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-500"><%= teacher.email %></div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-500"><%= teacher.phone_number %></div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <%= link_to 'View', schools_teacher_path(teacher), class: 'text-indigo-600 hover:text-indigo-900 mr-3' %>
+              <%= link_to 'Edit', edit_schools_teacher_path(teacher), class: 'text-yellow-600 hover:text-yellow-900 mr-3' %>
+              <%= button_to 'Delete', schools_teacher_path(teacher), method: :delete, class: 'text-red-600 hover:text-red-900', data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div> 

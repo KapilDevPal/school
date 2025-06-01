@@ -1,0 +1,104 @@
+<!-- Sidebar -->
+<div class="hidden md:flex md:flex-shrink-0">
+  <div class="flex flex-col w-64">
+    <div class="flex flex-col h-0 flex-1 bg-gray-800">
+      <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+        <div class="flex items-center flex-shrink-0 px-4">
+          <h1 class="text-white text-xl font-bold">Open School</h1>
+        </div>
+        <nav class="mt-5 flex-1 px-2 space-y-1">
+          <% if current_user&.admin? %>
+            <%= link_to admin_schools_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(admin_schools_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+              <i class="fas fa-school mr-3 flex-shrink-0 h-6 w-6"></i>
+              Schools
+            <% end %>
+            <%= link_to admin_plans_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(admin_plans_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+              <i class="fas fa-tags mr-3 flex-shrink-0 h-6 w-6"></i>
+              Plans
+            <% end %>
+          <% elsif current_school.present? %>
+            <%= link_to school_owner_path(current_school_owner), class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(school_owner_path(current_school_owner)) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+              <i class="fas fa-tachometer-alt mr-3 flex-shrink-0 h-6 w-6"></i>
+              Dashboard
+            <% end %>
+
+            <% if current_school&.feature_enabled?('students') %>
+              <%= link_to schools_students_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_students_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-user-graduate mr-3 flex-shrink-0 h-6 w-6"></i>
+                Students
+              <% end %>
+            <% end %>
+
+            <% if current_school&.feature_enabled?('classes') %>
+              <%= link_to schools_classes_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_classes_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-chalkboard mr-3 flex-shrink-0 h-6 w-6"></i>
+                Classes
+              <% end %>
+            <% end %>
+
+            <% if current_school&.feature_enabled?('teachers') %>
+              <%= link_to schools_teachers_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_teachers_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-chalkboard-teacher mr-3 flex-shrink-0 h-6 w-6"></i>
+                Teachers
+              <% end %>
+            <% end %>
+
+            <% if current_school&.feature_enabled?('exams') %>
+              <%= link_to schools_exams_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_exams_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-file-alt mr-3 flex-shrink-0 h-6 w-6"></i>
+                Exams
+              <% end %>
+            <% end %>
+
+            <% if current_school&.feature_enabled?('finance') %>
+              <%= link_to schools_fees_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_fees_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-money-bill-wave mr-3 flex-shrink-0 h-6 w-6"></i>
+                Finance
+              <% end %>
+            <% end %>
+
+            <% if current_school&.feature_enabled?('library') %>
+              <%= link_to schools_inventory_items_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_inventory_items_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-book mr-3 flex-shrink-0 h-6 w-6"></i>
+                Library
+              <% end %>
+            <% end %>
+
+            <% if current_school&.feature_enabled?('transport') %>
+              <%= link_to schools_transport_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_transport_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-bus mr-3 flex-shrink-0 h-6 w-6"></i>
+                Transport
+              <% end %>
+            <% end %>
+
+            <% if current_school&.feature_enabled?('attendance') %>
+              <%= link_to schools_attendance_records_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_attendance_records_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-clipboard-check mr-3 flex-shrink-0 h-6 w-6"></i>
+                Attendance
+              <% end %>
+            <% end %>
+
+            <% if current_school&.feature_enabled?('timetable') %>
+              <%= link_to schools_timetables_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_timetables_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-calendar-alt mr-3 flex-shrink-0 h-6 w-6"></i>
+                Timetable
+              <% end %>
+            <% end %>
+
+            <% if current_school&.feature_enabled?('notices') %>
+              <%= link_to schools_notices_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_notices_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-bullhorn mr-3 flex-shrink-0 h-6 w-6"></i>
+                Notices
+              <% end %>
+            <% end %>
+
+            <%= link_to edit_school_owner_path(current_school_owner), class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(edit_school_owner_path(current_school_owner)) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+              <i class="fas fa-cog mr-3 flex-shrink-0 h-6 w-6"></i>
+              Settings
+            <% end %>
+          <% end %>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div> 

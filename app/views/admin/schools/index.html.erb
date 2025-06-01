@@ -1,0 +1,60 @@
+<%# app/views/admin/schools/index.html.erb %>
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-xl font-semibold text-gray-900">Schools</h1>
+      <p class="mt-2 text-sm text-gray-700">A list of all schools in the system including their name, domain, plan, and status.</p>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+      <%= link_to 'Add School', new_admin_school_path, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto" %>
+    </div>
+  </div>
+
+  <div class="mt-8 flex flex-col">
+    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Domain</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Plan</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Subscription Ends</th>
+                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                  <span class="sr-only">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <% @schools.each do |school| %>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                    <%= link_to school.name, admin_school_path(school), class: "text-blue-600 hover:text-blue-900" %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= school.domain %></td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= school.plan&.name || 'No plan' %></td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm">
+                    <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 <%= school.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                      <%= school.active? ? 'Active' : 'Expired' %>
+                    </span>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= school.subscription_ends_at&.strftime("%B %d, %Y") %>
+                  </td>
+                  <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                    <div class="flex justify-end space-x-2">
+                      <%= link_to 'Edit', edit_admin_school_path(school), class: "text-blue-600 hover:text-blue-900" %>
+                      <%= button_to 'Delete', admin_school_path(school), method: :delete, class: "text-red-600 hover:text-red-900", data: { confirm: 'Are you sure?' } %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

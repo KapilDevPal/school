@@ -1,0 +1,74 @@
+<div class="header">
+  <div class="school-name"><%= @payslip.school.name %></div>
+  <div class="school-address"><%= @payslip.school.address %></div>
+</div>
+
+<div class="payslip-title">PAYSLIP</div>
+
+<div class="employee-info">
+  <div class="info-row">
+    <div class="info-label">Employee Name:</div>
+    <div><%= @payslip.teacher.full_name %></div>
+  </div>
+  <div class="info-row">
+    <div class="info-label">Employee ID:</div>
+    <div><%= @payslip.teacher.id %></div>
+  </div>
+  <div class="info-row">
+    <div class="info-label">Department:</div>
+    <div>Teaching Staff</div>
+  </div>
+  <div class="info-row">
+    <div class="info-label">Month:</div>
+    <div><%= @payslip.month_year %></div>
+  </div>
+</div>
+
+<table class="salary-details">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Basic Salary</td>
+      <td><%= number_to_currency(@payslip.basic_salary) %></td>
+    </tr>
+    <tr>
+      <td>House Rent Allowance</td>
+      <td><%= number_to_currency(@payslip.house_rent_allowance) %></td>
+    </tr>
+    <tr>
+      <td>Dearness Allowance</td>
+      <td><%= number_to_currency(@payslip.dearness_allowance) %></td>
+    </tr>
+    <tr>
+      <td>Travel Allowance</td>
+      <td><%= number_to_currency(@payslip.travel_allowance) %></td>
+    </tr>
+    <tr>
+      <td>Medical Allowance</td>
+      <td><%= number_to_currency(@payslip.medical_allowance) %></td>
+    </tr>
+    <tr>
+      <td>Total Salary</td>
+      <td><%= number_to_currency(@payslip.total_salary) %></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="signature-section">
+  <div class="signature-box">
+    <div class="signature-line">Employee Signature</div>
+  </div>
+  <div class="signature-box">
+    <div class="signature-line">Authorized Signature</div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>This is a computer generated document and does not require a physical signature.</p>
+  <p>Generated on: <%= Time.current.strftime("%B %d, %Y at %I:%M %p") %></p>
+</div> 

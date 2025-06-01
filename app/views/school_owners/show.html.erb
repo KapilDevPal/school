@@ -1,0 +1,136 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <% if @current_school.present? %>
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="px-4 py-5 sm:px-6">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-lg leading-6 font-medium text-gray-900"><%= @current_school.name %></h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">School details and subscription information.</p>
+          </div>
+          <div class="flex space-x-3">
+            <%= link_to 'Edit Profile', edit_school_owner_path(@school_owner), class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-200">
+        <dl>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Domain</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @current_school.domain %></dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Plan</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @current_school.plan&.name || 'No plan' %></dd>
+          </div>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Subscription Ends At</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @current_school.subscription_ends_at&.strftime('%B %d, %Y') %></dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Status</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <% if @current_school.active? %>
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Active</span>
+              <% else %>
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">Expired</span>
+              <% end %>
+            </dd>
+          </div>
+        </dl>
+      </div>
+      <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <h4 class="text-md font-semibold mb-2">Enabled Features</h4>
+        <div class="flex flex-wrap gap-2">
+          <% Plan::AVAILABLE_FEATURES.each do |feature| %>
+            <% if @current_school.feature_enabled?(feature) %>
+              <span class="inline-flex items-center px-2 py-1 rounded bg-blue-100 text-blue-800 text-xs font-medium"><%= feature.titleize %></span>
+            <% else %>
+              <span class="inline-flex items-center px-2 py-1 rounded bg-gray-200 text-gray-500 text-xs font-medium"><%= feature.titleize %></span>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="bg-white shadow rounded-lg p-6">
+      <p class="text-gray-500">No school selected or assigned. Please contact the administrator.</p>
+    </div>
+  <% end %>
+
+  <!-- School Selection -->
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold mb-4">My Schools</h2>
+    <div class="bg-white shadow rounded-lg p-6">
+      <% if @school_owner.schools.any? %>
+        <div class="mb-4">
+          <label for="school-select" class="block text-sm font-medium text-gray-700">Select School</label>
+          <select id="school-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+            <% @school_owner.schools.each do |school| %>
+              <option value="<%= school.id %>" <%= 'selected' if school == current_school %>>
+                <%= school.name %>
+              </option>
+            <% end %>
+          </select>
+        </div>
+        <div class="mt-4">
+          <%= link_to "Manage School", school_owner_schools_path(school_id: current_school.id), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        </div>
+      <% else %>
+        <p class="text-gray-500">No schools assigned yet. Please contact the administrator.</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- School Details -->
+  <% if current_school %>
+    <div class="bg-white shadow rounded-lg p-6 mb-6">
+      <h2 class="text-lg font-semibold mb-4">School Details</h2>
+      <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Name</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= current_school.name %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Domain</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= current_school.domain %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Plan</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= current_school.plan&.name || 'No Plan' %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Status</dt>
+          <dd class="mt-1 text-sm text-gray-900">
+            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= current_school.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+              <%= current_school.active? ? 'Active' : 'Inactive' %>
+            </span>
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- Enabled Features -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-lg font-semibold mb-4">Enabled Features</h2>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <% Plan::AVAILABLE_FEATURES.each do |feature| %>
+          <div class="flex items-center">
+            <% if current_school.feature_enabled?(feature) %>
+              <i class="fas fa-check text-green-500 mr-2"></i>
+            <% else %>
+              <i class="fas fa-times text-red-500 mr-2"></i>
+            <% end %>
+            <span class="text-sm text-gray-900"><%= feature.titleize %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  document.getElementById('school-select').addEventListener('change', function() {
+    const schoolId = this.value;
+    window.location.href = `/school_owner?school_id=${schoolId}`;
+  });
+</script> 

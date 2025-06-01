@@ -1,0 +1,104 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Payslips</h1>
+        <p class="text-gray-600 mt-1">Manage teacher payslips</p>
+      </div>
+      <div class="flex space-x-4">
+        <%= form_tag schools_payslips_path, method: :get, class: "flex items-center space-x-2" do %>
+          <%= date_field_tag :month, @month, class: "rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+          <%= submit_tag "Go", class: "px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" %>
+        <% end %>
+        <%= link_to new_schools_payslip_path, class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+          <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          Generate Payslips
+        <% end %>
+      </div>
+    </div>
+
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul class="divide-y divide-gray-200">
+        <% @payslips.each do |payslip| %>
+          <li>
+            <div class="px-4 py-4 sm:px-6">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                      <span class="text-gray-500 font-medium"><%= payslip.teacher.initials %></span>
+                    </div>
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-gray-900">
+                      <%= payslip.teacher.full_name %>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                      <%= payslip.month_year %>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                  <div class="text-right">
+                    <div class="text-sm font-medium text-gray-900">
+                      Total Salary: <%= number_to_currency(payslip.total_salary) %>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                      Status: <span class="<%= payslip.status == 'paid' ? 'text-green-600' : 'text-yellow-600' %>">
+                        <%= payslip.status.titleize %>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="flex space-x-2">
+                    <%= link_to schools_payslip_path(payslip, format: :pdf), class: "text-blue-600 hover:text-blue-900", target: "_blank" do %>
+                      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    <% end %>
+                    <%= link_to download_schools_payslip_path(payslip, format: :pdf), class: "text-green-600 hover:text-green-900" do %>
+                      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                    <% end %>
+                    <% if payslip.status == 'pending' %>
+                      <%= button_to mark_as_paid_schools_payslip_path(payslip), method: :patch, class: "text-yellow-600 hover:text-yellow-900" do %>
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-2 sm:flex sm:justify-between">
+                <div class="sm:flex">
+                  <div class="flex items-center text-sm text-gray-500">
+                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Basic: <%= number_to_currency(payslip.basic_salary) %>
+                  </div>
+                  <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
+                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    HRA: <%= number_to_currency(payslip.house_rent_allowance) %>
+                  </div>
+                </div>
+                <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                  <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Generated: <%= time_ago_in_words(payslip.created_at) %> ago
+                </div>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div> 

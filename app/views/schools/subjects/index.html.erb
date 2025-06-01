@@ -1,0 +1,36 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">Subjects</h1>
+    <%= link_to 'Add New Subject', new_schools_subject_path, class: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-200' %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+    <% @subjects.each do |subject| %>
+      <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="p-4">
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-lg font-semibold text-gray-800 truncate"><%= subject.name %></h2>
+            <span class="px-2 py-1 text-xs font-medium text-green-600 bg-green-100 rounded-full">
+              <%= subject.code %>
+            </span>
+          </div>
+          
+          <p class="text-sm text-gray-600 mb-3 line-clamp-2"><%= subject.description %></p>
+          
+          <div class="flex items-center text-sm text-gray-600 mb-3">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            <span><%= subject.credits %> Credits</span>
+          </div>
+
+          <div class="flex justify-end space-x-2">
+            <%= link_to 'View', schools_subject_path(subject), class: 'text-xs text-blue-600 hover:text-blue-900' %>
+            <%= link_to 'Edit', edit_schools_subject_path(subject), class: 'text-xs text-indigo-600 hover:text-indigo-900' %>
+            <%= button_to 'Delete', schools_subject_path(subject), method: :delete, class: 'text-xs text-red-600 hover:text-red-900', form: { data: { turbo_confirm: 'Are you sure?' } } %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div> 

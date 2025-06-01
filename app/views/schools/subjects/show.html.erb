@@ -1,0 +1,12 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="bg-white rounded-lg shadow p-6">
+    <h1 class="text-2xl font-bold text-gray-800 mb-4"><%= @subject.name %></h1>
+    <p class="text-gray-600 mb-2"><strong>Code:</strong> <%= @subject.code %></p>
+    <p class="text-gray-600 mb-2"><strong>Description:</strong> <%= @subject.description %></p>
+    <p class="text-gray-600 mb-2"><strong>Credits:</strong> <%= @subject.credits %></p>
+    <div class="mt-4 flex space-x-2">
+      <%= link_to 'Edit', edit_schools_subject_path(@subject), class: 'bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg' %>
+      <%= link_to 'Back', schools_subjects_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg' %>
+    </div>
+  </div>
+</div> 

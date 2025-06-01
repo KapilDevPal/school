@@ -1,0 +1,18 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-800 mb-4">Module Settings</h1>
+  <%= form_with(model: [:schools, @school], url: schools_module_settings_path, method: :patch) do |form| %>
+    <div class="mb-4">
+      <h2 class="text-lg font-semibold text-gray-700 mb-2">Available Modules</h2>
+      <% @available_features.each do |feature| %>
+        <div class="flex items-center mb-2">
+          <%= form.check_box :features_enabled, { multiple: true, checked: @school.features_enabled.include?(feature.to_s) }, feature, nil %>
+          <%= form.label feature, class: 'ml-2 text-gray-700' %>
+        </div>
+      <% end %>
+    </div>
+    <div class="flex space-x-2">
+      <%= form.submit 'Update Settings', class: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg' %>
+      <%= link_to 'Back', root_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg' %>
+    </div>
+  <% end %>
+</div> 

@@ -1,0 +1,31 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-800">Module Settings</h1>
+    </div>
+
+    <%= form_with(model: @school, url: schools_module_settings_path, method: :patch) do |form| %>
+      <div class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <% Plan::AVAILABLE_FEATURES.each do |feature| %>
+            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+              <%= form.check_box :features_enabled, 
+                  { multiple: true, 
+                    checked: @school.features_enabled.include?(feature.to_s),
+                    class: 'h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded' }, 
+                  feature, 
+                  nil %>
+              <label class="ml-3 block text-sm font-medium text-gray-700">
+                <%= feature.to_s.titleize %>
+              </label>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="flex justify-end">
+          <%= form.submit 'Update Settings', class: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div> 

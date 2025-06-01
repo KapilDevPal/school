@@ -1,0 +1,301 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- School Selection -->
+  <div class="mb-8">
+    <div class="flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-gray-900">School Management</h1>
+      <div class="flex items-center space-x-4">
+        <select id="school-select" class="block w-64 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+          <% current_school_owner.schools.each do |school| %>
+            <option value="<%= school.id %>" <%= 'selected' if school == @school %>>
+              <%= school.name %>
+            </option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+    <!-- Students Card -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Total Students</dt>
+              <dd class="flex items-baseline">
+                <div class="text-2xl font-semibold text-gray-900"><%= @school.students.count %></div>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-4">
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Boys</dt>
+            <dd class="mt-1 text-lg font-semibold text-indigo-600"><%= @school.students.where(gender: 'male').count %></dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Girls</dt>
+            <dd class="mt-1 text-lg font-semibold text-pink-600"><%= @school.students.where(gender: 'female').count %></dd>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Teachers Card -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Total Teachers</dt>
+              <dd class="flex items-baseline">
+                <div class="text-2xl font-semibold text-gray-900"><%= @school.teachers.count %></div>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-4">
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Male</dt>
+            <dd class="mt-1 text-lg font-semibold text-green-600"><%= @school.teachers.where(gender: 'male').count %></dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Female</dt>
+            <dd class="mt-1 text-lg font-semibold text-green-600"><%= @school.teachers.where(gender: 'female').count %></dd>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Classes Card -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
+            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Total Classes</dt>
+              <dd class="flex items-baseline">
+                <div class="text-2xl font-semibold text-gray-900"><%= @school.classes.count %></div>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="mt-4">
+          <dt class="text-sm font-medium text-gray-500">Average Students per Class</dt>
+          <dd class="mt-1 text-lg font-semibold text-purple-600">
+            <%= (@school.students.count.to_f / @school.classes.count).round(1) rescue 0 %>
+          </dd>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attendance Card -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
+            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Today's Attendance</dt>
+              <dd class="flex items-baseline">
+                <div class="text-2xl font-semibold text-gray-900">
+                  <%= @school.attendance_records.where(date: Date.today).count %>
+                </div>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="mt-4">
+          <dt class="text-sm font-medium text-gray-500">Attendance Rate</dt>
+          <dd class="mt-1 text-lg font-semibold text-blue-600">
+            <%= ((@school.attendance_records.where(date: Date.today).count.to_f / @school.students.count) * 100).round(1) rescue 0 %>%
+          </dd>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- School Details -->
+  <div class="bg-white shadow rounded-lg p-6 mb-8">
+    <h2 class="text-lg font-semibold mb-4">School Details</h2>
+    <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+      <div>
+        <dt class="text-sm font-medium text-gray-500">Name</dt>
+        <dd class="mt-1 text-sm text-gray-900"><%= @school.name %></dd>
+      </div>
+      <div>
+        <dt class="text-sm font-medium text-gray-500">Domain</dt>
+        <dd class="mt-1 text-sm text-gray-900"><%= @school.domain %></dd>
+      </div>
+      <div>
+        <dt class="text-sm font-medium text-gray-500">Plan</dt>
+        <dd class="mt-1 text-sm text-gray-900"><%= @school.plan&.name || 'No Plan' %></dd>
+      </div>
+      <div>
+        <dt class="text-sm font-medium text-gray-500">Status</dt>
+        <dd class="mt-1 text-sm text-gray-900">
+          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= @school.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+            <%= @school.active? ? 'Active' : 'Inactive' %>
+          </span>
+        </dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- Modules Grid -->
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <% if @school.feature_enabled?('students') %>
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+              <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <h3 class="text-lg font-medium text-gray-900">Students</h3>
+              <p class="mt-1 text-sm text-gray-500">Manage student records and information</p>
+            </div>
+          </div>
+          <div class="mt-6">
+            <%= link_to "Manage Students", schools_students_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @school.feature_enabled?('teachers') %>
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+              <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <h3 class="text-lg font-medium text-gray-900">Teachers</h3>
+              <p class="mt-1 text-sm text-gray-500">Manage teacher records and assignments</p>
+            </div>
+          </div>
+          <div class="mt-6">
+            <%= link_to "Manage Teachers", schools_teachers_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @school.feature_enabled?('classes') %>
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
+              <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <h3 class="text-lg font-medium text-gray-900">Classes</h3>
+              <p class="mt-1 text-sm text-gray-500">Manage class schedules and assignments</p>
+            </div>
+          </div>
+          <div class="mt-6">
+            <%= link_to "Manage Classes", schools_classes_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @school.feature_enabled?('fees') %>
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-yellow-500 rounded-md p-3">
+              <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <h3 class="text-lg font-medium text-gray-900">Fees</h3>
+              <p class="mt-1 text-sm text-gray-500">Manage student fees and payments</p>
+            </div>
+          </div>
+          <div class="mt-6">
+            <%= link_to "Manage Fees", schools_fees_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @school.feature_enabled?('attendance') %>
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-red-500 rounded-md p-3">
+              <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <h3 class="text-lg font-medium text-gray-900">Attendance</h3>
+              <p class="mt-1 text-sm text-gray-500">Track student and teacher attendance</p>
+            </div>
+          </div>
+          <div class="mt-6">
+            <%= link_to "Manage Attendance", schools_attendance_records_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @school.feature_enabled?('timetable') %>
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
+              <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <h3 class="text-lg font-medium text-gray-900">Timetable</h3>
+              <p class="mt-1 text-sm text-gray-500">Manage class schedules and timetables</p>
+            </div>
+          </div>
+          <div class="mt-6">
+            <%= link_to "Manage Timetable", schools_timetables_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.getElementById('school-select').addEventListener('change', function() {
+    const schoolId = this.value;
+    window.location.href = `/school_owner/schools/${schoolId}`;
+  });
+</script> 

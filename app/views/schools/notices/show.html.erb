@@ -1,0 +1,47 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-800">Notice Details</h1>
+      <div class="space-x-3">
+        <%= link_to 'Edit', edit_schools_notice_path(@notice), class: 'text-blue-600 hover:text-blue-900' %>
+        <%= link_to 'Back to Notices', schools_notices_path, class: 'text-gray-600 hover:text-gray-900' %>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl font-semibold text-gray-800"><%= @notice.title %></h2>
+          <span class="px-3 py-1 text-sm font-medium rounded-full
+            <%= case @notice.priority
+                when 'high' then 'bg-red-100 text-red-800'
+                when 'medium' then 'bg-yellow-100 text-yellow-800'
+                else 'bg-green-100 text-green-800'
+                end %>">
+            <%= @notice.priority.titleize %>
+          </span>
+        </div>
+
+        <div class="flex items-center text-sm text-gray-500 mb-6">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>Valid from <%= @notice.start_date.strftime("%B %d, %Y") %> to <%= @notice.end_date.strftime("%B %d, %Y") %></span>
+        </div>
+
+        <div class="prose max-w-none">
+          <%= simple_format @notice.content %>
+        </div>
+
+        <div class="mt-6 pt-6 border-t border-gray-200">
+          <div class="flex items-center text-sm text-gray-500">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            <span>Posted by <%= @notice.user&.full_name || 'System' %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
