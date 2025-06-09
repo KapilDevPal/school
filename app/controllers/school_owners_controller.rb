@@ -5,10 +5,18 @@ class SchoolOwnersController < ApplicationController
   def show
     @school_owner = current_school_owner
     @schools = @school_owner.schools
-    @current_school = if params[:school_id]
-      @schools.find_by(id: params[:school_id])
+    if params[:school_id]
+      session[:current_school_id] = params[:school_id]
+      @current_school = @schools.find_by(id: params[:school_id])
     else
-      @schools.first
+      @current_school = if session[:current_school_id]
+        @schools.find_by(id: session[:current_school_id])
+      else
+        nil
+      end
+    end
+    if (@current_school.nil? || params[:select_school]) && @schools.any?
+      render 'select_school' and return
     end
   end
 

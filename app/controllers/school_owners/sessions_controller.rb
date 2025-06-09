@@ -10,6 +10,10 @@ class SchoolOwners::SessionsController < Devise::SessionsController
   protected
 
   def after_sign_in_path_for(resource)
-    school_owner_path(resource)
+    if resource.schools.empty?
+      school_owner_path(resource, select_school: true)
+    else
+      school_owner_path(resource)
+    end
   end
 end 

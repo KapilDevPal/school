@@ -6,13 +6,28 @@ if schools.empty?
 else
   schools.each do |school|
     5.times do
-      Teacher.create!(
-        first_name: 'Teacher',
+      # Create user first
+      user = User.create!(
+        first_name: Faker::Name.first_name,
         last_name: Faker::Name.last_name,
         email: Faker::Internet.unique.email,
-        phone_number: Faker::PhoneNumber.phone_number,
-        password: 'password',
+        password: 'password123',
+        role: :teacher,
         school: school
+      )
+
+      # Create teacher with all required fields
+      Teacher.create!(
+        user: user,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        phone_number: Faker::PhoneNumber.cell_phone_in_e164,
+        password: 'password123',
+        school: school,
+        qualification: ['B.Ed', 'M.Ed', 'Ph.D'].sample,
+        experience: rand(1..20),
+        specialization: ['Mathematics', 'English', 'Science', 'History', 'Geography'].sample
       )
     end
   end

@@ -68,21 +68,14 @@ begin
   school_owner1 = SchoolOwner.create!(
     first_name: 'John',
     last_name: 'Smith',
-    email: 'john@example.com',
+    email: 'school.owner@example.com',
     password: 'password123'
   )
 
   school_owner2 = SchoolOwner.create!(
     first_name: 'Sarah',
     last_name: 'Johnson',
-    email: 'sarah@example.com',
-    password: 'password123'
-  )
-
-  school_owner3 = SchoolOwner.create!(
-    first_name: 'Michael',
-    last_name: 'Brown',
-    email: 'michael@example.com',
+    email: 'school.owner2@example.com',
     password: 'password123'
   )
 rescue => e
@@ -96,19 +89,10 @@ begin
   admin1 = User.create!(
     first_name: 'Admin',
     last_name: 'User',
-    email: 'admin@stmarys.edu',
+    email: 'admin@example.com',
     password: 'password123',
     role: :admin,
     school: school1
-  )
-
-  admin2 = User.create!(
-    first_name: 'Admin',
-    last_name: 'User',
-    email: 'admin@sunshine.edu',
-    password: 'password123',
-    role: :admin,
-    school: school2
   )
 rescue => e
   puts "Error creating admin users: #{e.message}"
@@ -118,31 +102,48 @@ end
 # Create Teachers
 puts "Creating teachers..."
 begin
+  # Teacher 1
+  teacher1_user = User.create!(
+    first_name: "John",
+    last_name: "Doe",
+    email: "teacher@example.com",
+    password: "password123",
+    role: :teacher,
+    school: school1
+  )
   teacher1 = Teacher.create!(
-    first_name: 'Emma',
-    last_name: 'Wilson',
-    email: 'emma@stmarys.edu',
-    phone_number: '1112223333',
+    user_id: teacher1_user.id,
+    first_name: "John",
+    last_name: "Doe",
+    email: "teacher@example.com",
     school: school1,
-    password: 'password123'
+    phone_number: '1112223333',
+    password: 'password123',
+    qualification: 'M.Ed',
+    experience: 5,
+    specialization: 'Mathematics'
   )
 
+  # Teacher 2
+  teacher2_user = User.create!(
+    first_name: 'Jane',
+    last_name: 'Smith',
+    email: 'teacher2@example.com',
+    password: 'password123',
+    role: :teacher,
+    school: school1
+  )
   teacher2 = Teacher.create!(
-    first_name: 'James',
-    last_name: 'Anderson',
-    email: 'james@stmarys.edu',
+    user_id: teacher2_user.id,
+    first_name: 'Jane',
+    last_name: 'Smith',
+    email: 'teacher2@example.com',
     phone_number: '4445556666',
     school: school1,
-    password: 'password123'
-  )
-
-  teacher3 = Teacher.create!(
-    first_name: 'Lisa',
-    last_name: 'Martinez',
-    email: 'lisa@sunshine.edu',
-    phone_number: '7778889999',
-    school: school2,
-    password: 'password123'
+    password: 'password123',
+    qualification: 'B.Ed',
+    experience: 3,
+    specialization: 'English'
   )
 rescue => e
   puts "Error creating teachers: #{e.message}"
@@ -152,11 +153,20 @@ end
 # Create Students
 puts "Creating students..."
 begin
-  student1 = Student.create!(
+  # Student 1
+  student1_user = User.create!(
     first_name: 'Alex',
     last_name: 'Johnson',
-    email: 'alex@stmarys.edu',
-    # phone: '1231231234',
+    email: 'student@example.com',
+    password: 'password123',
+    role: :student,
+    school: school1
+  )
+  student1 = Student.create!(
+    user_id: student1_user.id,
+    first_name: 'Alex',
+    last_name: 'Johnson',
+    email: 'student@example.com',
     school: school1,
     password: 'password123',
     admission_number: 'ST001',
@@ -164,28 +174,25 @@ begin
     date_of_birth: '2005-05-15'
   )
 
-  student2 = Student.create!(
-    first_name: 'Sophia',
+  # Student 2
+  student2_user = User.create!(
+    first_name: 'Emma',
     last_name: 'Williams',
-    email: 'sophia@stmarys.edu',
-    # phone: '2342342345',
+    email: 'student2@example.com',
+    password: 'password123',
+    role: :student,
+    school: school1
+  )
+  student2 = Student.create!(
+    user_id: student2_user.id,
+    first_name: 'Emma',
+    last_name: 'Williams',
+    email: 'student2@example.com',
     school: school1,
     password: 'password123',
     admission_number: 'ST002',
     class_section: '10B',
     date_of_birth: '2005-06-20'
-  )
-
-  student3 = Student.create!(
-    first_name: 'Noah',
-    last_name: 'Brown',
-    email: 'noah@sunshine.edu',
-    # phone: '3453453456',
-    school: school2,
-    password: 'password123',
-    admission_number: 'ST003',
-    class_section: '9A',
-    date_of_birth: '2006-03-10'
   )
 rescue => e
   puts "Error creating students: #{e.message}"
@@ -204,33 +211,72 @@ begin
     school_owner: school_owner2,
     school: school2
   )
-
-  SchoolOwnerSchool.create!(
-    school_owner: school_owner3,
-    school: school1
-  )
-
-  SchoolOwnerSchool.create!(
-    school_owner: school_owner3,
-    school: school2
-  )
 rescue => e
   puts "Error creating school owner associations: #{e.message}"
   raise e
 end
 
+# Create School Classes
+puts "Creating school classes..."
+begin
+  class1 = SchoolClass.create!(
+    name: '10A',
+    grade: '10',
+    section: 'A',
+    room_number: 'A1',
+    capacity: 30,
+    school: school1,
+    teacher_id: teacher1.id
+  )
+  class2 = SchoolClass.create!(
+    name: '10B',
+    grade: '10',
+    section: 'B',
+    room_number: 'B1',
+    capacity: 28,
+    school: school1,
+    teacher_id: teacher2.id
+  )
+rescue => e
+  puts "Error creating school classes: #{e.message}"
+  raise e
+end
+
+# Associate Teachers with Classes
+puts "Associating teachers with classes..."
+begin
+  TeacherClass.create!(teacher: teacher1, school_class: class1)
+  TeacherClass.create!(teacher: teacher2, school_class: class2)
+rescue => e
+  puts "Error associating teachers with classes: #{e.message}"
+  raise e
+end
+
+# Associate Students with Classes
+puts "Associating students with classes..."
+begin
+  StudentClass.create!(student: student1, school_class: class1)
+  StudentClass.create!(student: student2, school_class: class2)
+rescue => e
+  puts "Error associating students with classes: #{e.message}"
+  raise e
+end
+
 puts "Seed data created successfully!"
+puts "\nTest Accounts:"
+puts "=============="
+puts "School Owner:"
+puts "  Email: school.owner@example.com"
+puts "  Password: password123"
+puts "\nTeacher:"
+puts "  Email: teacher@example.com"
+puts "  Password: password123"
+puts "\nStudent:"
+puts "  Email: student@example.com"
+puts "  Password: password123"
 
-# Load all seed files in specific order
-seed_files = [
-  'teachers.rb',    # Create teachers first
-  'subjects.rb',    # Then subjects
-  'classes.rb',     # Then classes (depends on teachers)
-  'timetables.rb',  # Then timetables (depends on classes, subjects, and teachers)
-  'fees.rb'         # Finally fees (depends on students)
-]
-
-seed_files.each do |seed_file|
-  puts "\nLoading seed file: #{seed_file}"
-  load File.join(Rails.root, 'db', 'seeds', seed_file)
+# Load all seed files
+Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each do |seed_file|
+  puts "Loading #{seed_file}..."
+  load seed_file
 end

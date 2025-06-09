@@ -1,26 +1,61 @@
 <div class="min-h-screen bg-gray-100">
-  <div class="container mx-auto px-4 py-16">
-    <div class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">Welcome to OpenSchool</h1>
-      <p class="text-xl text-gray-600">Please select your login type</p>
+  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
+        Welcome to OpenSchool
+      </h1>
+      <p class="mt-5 max-w-xl mx-auto text-xl text-gray-500">
+        A comprehensive school management system for modern education.
+      </p>
     </div>
 
-    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- School Owner Login Card -->
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div class="p-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">School Owner</h2>
-          <p class="text-gray-600 mb-6">Access your school's management dashboard and settings.</p>
-          <%= link_to 'Login as School Owner', new_school_owner_session_path, class: 'block w-full text-center bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition duration-150' %>
+    <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- School Owner Login -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">
+            School Owner
+          </h3>
+          <div class="mt-2 max-w-xl text-sm text-gray-500">
+            <p>Manage your school, staff, and resources.</p>
+          </div>
+          <div class="mt-5">
+            <%= link_to "Login as School Owner", new_school_owner_session_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          </div>
         </div>
       </div>
 
-      <!-- Staff/User Login Card -->
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div class="p-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Staff/User</h2>
-          <p class="text-gray-600 mb-6">Access your school's management system as staff or user.</p>
-          <%= link_to 'Login as Staff/User', new_user_session_path, class: 'block w-full text-center bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 transition duration-150' %>
+      <!-- Teacher Login -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">
+            Teacher
+          </h3>
+          <div class="mt-2 max-w-xl text-sm text-gray-500">
+            <p class="mt-2 text-base text-gray-500">
+              Access your classes, manage attendance, and more.
+            </p>
+          </div>
+          <div class="mt-5">
+            <%= link_to "Login as Teacher", new_user_session_path(role: 'teacher'), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Login -->
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">
+            Student
+          </h3>
+          <div class="mt-2 max-w-xl text-sm text-gray-500">
+            <p class="mt-2 text-base text-gray-500">
+              View your classes, grades, and assignments.
+            </p>
+          </div>
+          <div class="mt-5">
+            <%= link_to "Login as Student", new_user_session_path(role: 'student'), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          </div>
         </div>
       </div>
     </div>

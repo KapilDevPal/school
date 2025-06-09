@@ -1,11 +1,11 @@
 module Schools
   class StudentsController < ApplicationController
-    before_action :authenticate_user!
+    before_action :authenticate_school_owner!
     before_action :check_feature_enabled
     before_action :set_student, only: [:show, :edit, :update, :destroy]
 
     def index
-      @students = current_school.students.includes(:school_class)
+      @students = current_school.students
     end
 
     def show
@@ -48,12 +48,13 @@ module Schools
     end
 
     def student_params
-      params.require(:student).permit(:first_name, :last_name, :email, :phone_number, :date_of_birth, :gender, :address, :school_class_id)
+      params.require(:student).permit(:email, :password, :password_confirmation, :first_name, :last_name, 
+                                    :admission_number, :class_section, :date_of_birth, :phone_number)
     end
 
     def check_feature_enabled
-      unless feature_enabled?(:student_management)
-        redirect_to root_path, alert: 'Student management feature is not enabled for this school.'
+      unless feature_enabled?(:students)
+        redirect_to root_path, alert: 'Students feature is not enabled for this school.'
       end
     end
   end

@@ -1,0 +1,71 @@
+<%= form_with(model: [:teacher, teaching_material], class: "space-y-6") do |f| %>
+  <div class="shadow sm:rounded-md sm:overflow-hidden">
+    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+      <div class="grid grid-cols-6 gap-6">
+        <div class="col-span-6 sm:col-span-4">
+          <%= f.label :title, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_field :title, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+
+        <div class="col-span-6 sm:col-span-3">
+          <%= f.label :subject, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_field :subject, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+
+        <div class="col-span-6 sm:col-span-3">
+          <%= f.label :grade_level, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.select :grade_level, 
+              options_for_select([
+                ['Grade 1', '1'],
+                ['Grade 2', '2'],
+                ['Grade 3', '3'],
+                ['Grade 4', '4'],
+                ['Grade 5', '5'],
+                ['Grade 6', '6'],
+                ['Grade 7', '7'],
+                ['Grade 8', '8'],
+                ['Grade 9', '9'],
+                ['Grade 10', '10'],
+                ['Grade 11', '11'],
+                ['Grade 12', '12']
+              ]),
+              { prompt: 'Select grade level' },
+              class: "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          %>
+        </div>
+
+        <div class="col-span-6 sm:col-span-3">
+          <%= f.label :material_type, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.select :material_type, 
+              options_for_select([
+                ['Lecture Notes', 'lecture_notes'],
+                ['Worksheet', 'worksheet'],
+                ['Assignment', 'assignment'],
+                ['Study Guide', 'study_guide'],
+                ['Presentation', 'presentation'],
+                ['Video', 'video'],
+                ['Other', 'other']
+              ]),
+              { prompt: 'Select material type' },
+              class: "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          %>
+        </div>
+
+        <div class="col-span-6">
+          <%= f.label :description, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_area :description, rows: 4, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+
+        <div class="col-span-6">
+          <%= f.label :file, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.file_field :file, class: "mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+      <%= link_to "Cancel", teacher_teaching_materials_path, class: "inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      <%= f.submit class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    </div>
+  </div>
+<% end %> 

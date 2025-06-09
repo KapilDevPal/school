@@ -32,9 +32,10 @@ class School < ApplicationRecord
   has_many :inventory_items
   has_many :inventory_transactions, through: :inventory_items
   has_many :transport_routes
+  has_many :exams
 
   validates :name, presence: true
-  validates :domain, presence: true, uniqueness: true
+  validates :domain, presence: true#, uniqueness: true
   validates :subscription_ends_at, presence: true
 
   before_validation :set_default_subscription_end, on: :create

@@ -1,0 +1,61 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
+      <div class="px-4 sm:px-0">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">New Leave Application</h3>
+        <p class="mt-1 text-sm text-gray-600">
+          Fill in the details below to submit your leave application. Make sure to provide accurate dates and a valid reason.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-5 md:mt-0 md:col-span-2">
+      <%= form_with(model: @leave_application, url: teacher_leave_applications_path, class: "space-y-6") do |f| %>
+        <div class="shadow sm:rounded-md sm:overflow-hidden">
+          <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+            <div class="grid grid-cols-6 gap-6">
+              <div class="col-span-6 sm:col-span-3">
+                <%= f.label :leave_type, class: "block text-sm font-medium text-gray-700" %>
+                <%= f.select :leave_type, 
+                    options_for_select([
+                      ['Sick Leave', 'sick'],
+                      ['Casual Leave', 'casual'],
+                      ['Annual Leave', 'annual'],
+                      ['Emergency Leave', 'emergency']
+                    ]),
+                    { prompt: 'Select leave type' },
+                    class: "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                %>
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <%= f.label :contact_number, class: "block text-sm font-medium text-gray-700" %>
+                <%= f.telephone_field :contact_number, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <%= f.label :start_date, class: "block text-sm font-medium text-gray-700" %>
+                <%= f.date_field :start_date, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <%= f.label :end_date, class: "block text-sm font-medium text-gray-700" %>
+                <%= f.date_field :end_date, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+
+              <div class="col-span-6">
+                <%= f.label :reason, class: "block text-sm font-medium text-gray-700" %>
+                <%= f.text_area :reason, rows: 4, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <%= link_to "Cancel", teacher_leave_applications_path, class: "inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+            <%= f.submit "Submit Application", class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div> 

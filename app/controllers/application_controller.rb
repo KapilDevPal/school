@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_user_or_school_owner!
+    return if devise_controller?
+    
     if controller_path.start_with?('schools/')
       authenticate_school_owner!
       unless current_school_owner&.schools&.include?(current_school)
@@ -20,6 +22,16 @@ class ApplicationController < ActionController::Base
       end
     elsif controller_path.start_with?('admin/')
       authenticate_user!
+    elsif controller_path.start_with?('teacher/')
+      authenticate_user!
+      unless current_user.teacher?
+        redirect_to root_path, alert: 'You do not have permission to access this page.'
+      end
+    elsif controller_path.start_with?('student/')
+      authenticate_user!
+      unless current_user.student?
+        redirect_to root_path, alert: 'You do not have permission to access this page.'
+      end
     else
       unless user_signed_in? || school_owner_signed_in?
         if request.path.start_with?('/schools/')
@@ -41,7 +53,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_school_owner
-    @current_school_owner ||= current_school_owner
+    @current_school_owner ||= warden.authenticate(scope: :school_owner)
   end
 
   def feature_enabled?(feature)

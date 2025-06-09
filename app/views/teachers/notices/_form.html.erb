@@ -1,0 +1,80 @@
+<%= form_with(model: [:teacher, notice], class: "space-y-6") do |f| %>
+  <div class="shadow sm:rounded-md sm:overflow-hidden">
+    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+      <div class="grid grid-cols-6 gap-6">
+        <div class="col-span-6 sm:col-span-4">
+          <%= f.label :title, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_field :title, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+
+        <div class="col-span-6 sm:col-span-3">
+          <%= f.label :notice_type, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.select :notice_type, 
+              options_for_select([
+                ['Announcement', 'announcement'],
+                ['Reminder', 'reminder'],
+                ['Urgent', 'urgent']
+              ]),
+              { prompt: 'Select notice type' },
+              class: "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          %>
+        </div>
+
+        <div class="col-span-6 sm:col-span-3">
+          <%= f.label :target_audience, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.select :target_audience, 
+              options_for_select([
+                ['All Students', 'all_students'],
+                ['Specific Classes', 'specific_classes']
+              ]),
+              { prompt: 'Select target audience' },
+              class: "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          %>
+        </div>
+
+        <div class="col-span-6" data-controller="notice-form">
+          <div data-notice-form-target="classesField" class="<%= notice.target_audience == 'specific_classes' ? '' : 'hidden' %>">
+            <%= f.label :school_class_ids, "Select Classes", class: "block text-sm font-medium text-gray-700" %>
+            <div class="mt-2 space-y-2">
+              <%= f.collection_check_boxes :school_class_ids, current_user.teacher.school_classes, :id, :name do |b| %>
+                <div class="flex items-center">
+                  <%= b.check_box class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" %>
+                  <%= b.label class: "ml-3 text-sm text-gray-600" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-span-6">
+          <%= f.label :content, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_area :content, rows: 6, class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+      <%= link_to "Cancel", teacher_notices_path, class: "inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      <%= f.submit class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    </div>
+  </div>
+<% end %>
+
+<% content_for :head do %>
+  <script>
+    document.addEventListener('turbo:load', function() {
+      const targetAudienceSelect = document.querySelector('#notice_target_audience');
+      const classesField = document.querySelector('[data-notice-form-target="classesField"]');
+
+      if (targetAudienceSelect && classesField) {
+        targetAudienceSelect.addEventListener('change', function() {
+          if (this.value === 'specific_classes') {
+            classesField.classList.remove('hidden');
+          } else {
+            classesField.classList.add('hidden');
+          }
+        });
+      }
+    });
+  </script>
+<% end %> 

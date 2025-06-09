@@ -1,44 +1,35 @@
-# Create sample timetables
-puts "Creating sample timetables..."
+puts "Creating timetables..."
 
-# Get all classes, subjects, and teachers
-classes = SchoolClass.all
+# Get all subjects and teachers for reference
 subjects = Subject.all
 teachers = Teacher.all
 
-# Days of the week
-days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+if subjects.empty? || teachers.empty?
+  puts "No subjects or teachers found! Cannot create timetables."
+else
+  SchoolClass.find_each do |school_class|
+    # Create timetables for each day of the week (Monday to Friday)
+    %w[Monday Tuesday Wednesday Thursday Friday].each_with_index do |day, day_index|
+      # Create 8 periods per day (assuming 40-minute periods with breaks)
+      (1..8).each do |period|
+        start_time = Time.new(2024, 1, 1, 8, 0) + day_index.days + (period - 1) * 45.minutes
+        end_time = start_time + 40.minutes
 
-# Time slots
-time_slots = [
-  { start_time: '08:00', end_time: '09:00' },
-  { start_time: '09:00', end_time: '10:00' },
-  { start_time: '10:00', end_time: '11:00' },
-  { start_time: '11:00', end_time: '12:00' },
-  { start_time: '13:00', end_time: '14:00' },
-  { start_time: '14:00', end_time: '15:00' },
-  { start_time: '15:00', end_time: '16:00' }
-]
+        # Assign random subject and teacher
+        subject = subjects.sample
+        teacher = teachers.sample
 
-# Create timetables for each class
-classes.each do |school_class|
-  days.each do |day|
-    time_slots.each do |slot|
-      # Randomly assign a subject and teacher
-      subject = subjects.sample
-      teacher = teachers.sample
-
-      Timetable.create!(
-        school_class: school_class,
-        subject: subject,
-        teacher: teacher,
-        day_of_week: day,
-        start_time: slot[:start_time],
-        end_time: slot[:end_time],
-        room_number: "#{school_class.room_number}"
-      )
+        Timetable.create!(
+          school_class: school_class,
+          subject: subject,
+          teacher: teacher,
+          day_of_week: day,
+          start_time: start_time,
+          end_time: end_time,
+          room_number: "Room #{rand(1..20)}"
+        )
+      end
     end
   end
-end
-
-puts "Created #{Timetable.count} timetable entries" 
+  puts "Created timetables for all school classes"
+end 

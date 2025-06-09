@@ -12,12 +12,15 @@ Rails.application.routes.draw do
   devise_for :students
 
   root 'pages#landing'
+  get 'about', to: 'pages#about'
 
-  # School Owner routes
-  resource :school_owner, only: [:show, :edit, :update] do
-    resources :schools, only: [:index, :show, :edit, :update]
+  # Custom login routes within devise_scope
+  devise_scope :user do
+    get 'login/teacher', to: 'users/sessions#new_teacher', as: :teacher_login
+    get 'login/student', to: 'users/sessions#new_student', as: :student_login
   end
 
+  # Admin routes
   namespace :admin do
     root to: 'dashboard#index'
     resources :schools do
@@ -28,12 +31,38 @@ Rails.application.routes.draw do
     end
     resources :plans
     resources :users
+    resources :school_classes
+    resources :teachers
+    resources :students
+    resources :subjects
+    resources :exams
+    resources :assignments
+    resources :attendance
+    resources :timetables
+    resources :leave_applications
+    resources :teaching_materials
+    resources :notices
+    resources :profile, only: [:show, :edit, :update]
   end
 
+  # School Owner routes
   namespace :schools do
-    resources :students
-    resources :teachers do
-      resources :salary_structures, only: [:new, :create]
+    root to: 'dashboard#index'
+    resources :schools do
+      resources :students
+      resources :teachers do
+        resources :salary_structures, only: [:new, :create] do
+          member do
+            get :download
+            patch :mark_as_paid
+          end
+        end
+      end
+      resources :classes
+      resources :subjects
+      resources :exams
+      resources :notices
+      resources :fees
     end
     resources :salary_structures do
       member do
@@ -41,51 +70,43 @@ Rails.application.routes.draw do
         patch :mark_as_paid
       end
     end
-    resources :payslips do
-      member do
-        get :download
-        patch :mark_as_paid
-      end
-    end
-    resources :classes
-    resources :subjects
     resources :timetables
     resources :attendance_records, only: [:index]
     resources :teacher_attendances
-    resources :notices
     resources :fees
     resources :inventory_items do
       resources :inventory_transactions, only: [:new, :create]
     end
     resources :transport
     resources :calendar
-    resources :students
-    resources :teachers
-    resources :school_classes
-    resource :module_settings, only: [:show, :update]
     resources :exams
+    resource :module_settings, only: [:show, :update]
   end
 
-  namespace :teacher do
-    resources :classes
-    resources :attendance
-    resources :timetables
-    resources :subjects
-  end
-
-  namespace :student do
-    resources :dashboard
-    resources :timetables
-    resources :subjects
-    resources :attendance
-    resources :fees
+  # Teacher routes
+  namespace :teachers do
+    root to: 'dashboard#index'
+    resources :attendance, only: [:index, :create, :update]
+    resources :timetables, only: [:index, :show]
+    resources :leave_applications
+    resources :teaching_materials
+    resources :student_progress, only: [:index, :show]
     resources :notices
+    resources :school_classes, only: [:index, :show]
+    resource :profile, only: [:show, :edit, :update]
   end
 
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # Student routes
+  namespace :student do
+    root to: 'dashboard#index'
+    resources :academic_progress, only: [:index, :show]
+    resources :timetables, only: [:index]
+    resources :notices, only: [:index, :show]
+    resources :fees, only: [:index, :show]
+    resources :profile, only: [:show, :edit, :update]
+  end
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health check route
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
@@ -95,6 +116,5 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  # Dashboard route
-  get 'dashboard', to: 'dashboard#index', as: :dashboard
+  resources :school_owners, only: [:show, :edit, :update]
 end

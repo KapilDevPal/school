@@ -1,0 +1,65 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+      <h3 class="text-lg leading-6 font-medium text-gray-900">Mark Attendance</h3>
+      <p class="mt-1 max-w-2xl text-sm text-gray-500">Mark attendance for <%= @school_class.name %> on <%= Date.today.strftime("%B %d, %Y") %></p>
+    </div>
+
+    <%= form_with(url: teacher_attendance_index_path(school_class_id: @school_class.id), method: :post, class: "space-y-8 divide-y divide-gray-200") do |f| %>
+      <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @students.each_with_index do |student, index| %>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <%= student.full_name %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div class="flex items-center space-x-4">
+                      <div class="flex items-center">
+                        <%= f.radio_button "attendance[#{student.id}]", 'present', 
+                            checked: @attendance_records[index].status == 'present',
+                            class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" %>
+                        <%= f.label "attendance[#{student.id}]_present", "Present", class: "ml-2 block text-sm text-gray-900" %>
+                      </div>
+                      <div class="flex items-center">
+                        <%= f.radio_button "attendance[#{student.id}]", 'absent',
+                            checked: @attendance_records[index].status == 'absent',
+                            class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" %>
+                        <%= f.label "attendance[#{student.id}]_absent", "Absent", class: "ml-2 block text-sm text-gray-900" %>
+                      </div>
+                      <div class="flex items-center">
+                        <%= f.radio_button "attendance[#{student.id}]", 'late',
+                            checked: @attendance_records[index].status == 'late',
+                            class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" %>
+                        <%= f.label "attendance[#{student.id}]_late", "Late", class: "ml-2 block text-sm text-gray-900" %>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <%= f.text_field "remarks[#{student.id}]", 
+                        value: @attendance_records[index].remarks,
+                        class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md",
+                        placeholder: "Add remarks (optional)" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+        <%= f.submit "Save Attendance", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      </div>
+    <% end %>
+  </div>
+</div> 

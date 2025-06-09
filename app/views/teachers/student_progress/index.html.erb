@@ -1,0 +1,74 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-xl font-semibold text-gray-900">Student Progress</h1>
+      <p class="mt-2 text-sm text-gray-700">Track and monitor student performance across your classes.</p>
+    </div>
+  </div>
+
+  <div class="mt-8 space-y-8">
+    <% @school_classes.each do |school_class| %>
+      <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900"><%= school_class.name %></h3>
+          <p class="mt-1 max-w-2xl text-sm text-gray-500">Class Teacher: <%= school_class.teacher.full_name %></p>
+        </div>
+        <div class="border-t border-gray-200">
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Attendance Rate</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Average Score</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assignments Completed</th>
+                  <th scope="col" class="relative px-6 py-3">
+                    <span class="sr-only">View</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% school_class.students.each do |student| %>
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10">
+                          <% if student.avatar.attached? %>
+                            <%= image_tag student.avatar, class: "h-10 w-10 rounded-full" %>
+                          <% else %>
+                            <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                              <span class="text-gray-500 text-sm"><%= student.initials %></span>
+                            </div>
+                          <% end %>
+                        </div>
+                        <div class="ml-4">
+                          <div class="text-sm font-medium text-gray-900"><%= student.full_name %></div>
+                          <div class="text-sm text-gray-500"><%= student.roll_number %></div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <% attendance_rate = student.attendance_records.where(school_class_id: school_class.id).present.count.to_f / student.attendance_records.where(school_class_id: school_class.id).count * 100 %>
+                      <div class="text-sm text-gray-900"><%= number_to_percentage(attendance_rate, precision: 1) %></div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <% average_score = student.exam_results.where(school_class_id: school_class.id).average(:score) %>
+                      <div class="text-sm text-gray-900"><%= number_to_percentage(average_score || 0, precision: 1) %></div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <% completed_assignments = student.assignments.where(school_class_id: school_class.id, status: 'completed').count %>
+                      <div class="text-sm text-gray-900"><%= completed_assignments %></div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <%= link_to "View Details", teacher_student_progress_path(student), class: "text-indigo-600 hover:text-indigo-900" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div> 

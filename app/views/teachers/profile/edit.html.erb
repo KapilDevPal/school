@@ -1,0 +1,80 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+      <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Profile</h3>
+      <p class="mt-1 max-w-2xl text-sm text-gray-500">Update your personal details and qualifications.</p>
+    </div>
+
+    <%= form_with(model: [:teacher, @teacher], local: true, class: "space-y-8 divide-y divide-gray-200") do |f| %>
+      <div class="space-y-8 divide-y divide-gray-200">
+        <div class="pt-8">
+          <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+            <div class="sm:col-span-3">
+              <%= f.label :first_name, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.text_field :first_name, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :last_name, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.text_field :last_name, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-4">
+              <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.email_field :email, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :phone_number, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.telephone_field :phone_number, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :qualification, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.text_field :qualification, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :experience_years, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.number_field :experience_years, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :specialization, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.text_field :specialization, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-6">
+              <%= f.label :bio, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.text_area :bio, rows: 3, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">Write a few sentences about yourself.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-5">
+        <div class="flex justify-end">
+          <%= link_to "Cancel", teacher_profile_path(@teacher), class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <%= f.submit "Save", class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div> 

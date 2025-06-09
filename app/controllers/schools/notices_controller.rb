@@ -1,10 +1,11 @@
 module Schools
   class NoticesController < ApplicationController
-    before_action :authenticate_user!
+    before_action :authenticate_school_owner!
+    before_action :check_feature_enabled
     before_action :set_notice, only: [:show, :edit, :update, :destroy]
 
     def index
-      @notices = current_school.notices.order(created_at: :desc)
+      @notices = current_school.notices
     end
 
     def show
@@ -48,6 +49,12 @@ module Schools
 
     def notice_params
       params.require(:notice).permit(:title, :content, :start_date, :end_date, :priority)
+    end
+
+    def check_feature_enabled
+      unless feature_enabled?(:notices)
+        redirect_to root_path, alert: 'Notices feature is not enabled for this school.'
+      end
     end
   end
 end 

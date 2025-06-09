@@ -1,97 +1,54 @@
 <!-- Navbar -->
-<nav class="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+<nav class="bg-white border-b border-gray-200 fixed w-full z-30 top-0 left-0">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16">
-      <div class="flex">
-        <div class="flex-shrink-0 flex items-center">
-          <%= link_to root_path, class: "text-blue-600 hover:text-blue-800 transition-colors duration-200" do %>
-            <i class="fas fa-graduation-cap text-2xl mr-2"></i>
-            <span class="font-bold text-xl">OpenSchool</span>
-          <% end %>
-        </div>
-        
-        <% if user_signed_in? && current_user.admin? %>
-          <div class="hidden md:ml-6 md:flex md:space-x-8">
-            <%= link_to "Dashboard", admin_root_path, class: "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent hover:border-gray-300" %>
-            <%= link_to "Schools", admin_schools_path, class: "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent hover:border-gray-300" %>
-            <%= link_to "Users", admin_users_path, class: "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent hover:border-gray-300" %>
-          </div>
-        <% end %>
+      <div class="flex items-center">
+        <button id="mobile-menu-button" class="lg:hidden mr-2 p-2 rounded-md text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <a href="/" class="flex items-center text-xl font-bold text-indigo-700">
+          <span>OpenSchool</span>
+        </a>
       </div>
-
-      <div class="flex items-center space-x-4">
+      <div class="hidden lg:flex items-center space-x-4">
+        <%= link_to 'Dashboard', root_path, class: 'text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium' %>
+        <%= link_to 'About', about_path, class: 'text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium' %>
         <% if user_signed_in? %>
-          <% if current_user.admin? %>
-            <%= link_to admin_root_path, class: "text-gray-600 hover:text-gray-900 transition-colors duration-200" do %>
-              <i class="fas fa-tachometer-alt mr-1"></i>
-              Dashboard
-            <% end %>
-            <%= button_to destroy_user_session_path, method: :delete, class: "text-gray-600 hover:text-gray-900 transition-colors duration-200" do %>
-              <i class="fas fa-sign-out-alt mr-1"></i>
-              Sign out
-            <% end %>
-          <% elsif current_user.school_owner? %>
-            <%= link_to schools_root_path, class: "text-gray-600 hover:text-gray-900 transition-colors duration-200" do %>
-              <i class="fas fa-school mr-1"></i>
-              School Dashboard
-            <% end %>
-            <%= button_to destroy_user_session_path, method: :delete, class: "text-gray-600 hover:text-gray-900 transition-colors duration-200" do %>
-              <i class="fas fa-sign-out-alt mr-1"></i>
-              Sign out
-            <% end %>
-          <% elsif current_user.accountant? %>
-            <%= link_to schools_root_path, class: "text-gray-600 hover:text-gray-900 transition-colors duration-200" do %>
-              <i class="fas fa-calculator mr-1"></i>
-              Finance Dashboard
-            <% end %>
-            <%= button_to destroy_user_session_path, method: :delete, class: "text-gray-600 hover:text-gray-900 transition-colors duration-200" do %>
-              <i class="fas fa-sign-out-alt mr-1"></i>
-              Sign out
-            <% end %>
-          <% end %>
-
-          <div class="relative" data-controller="dropdown">
-            <button type="button" data-action="click->dropdown#toggle" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors duration-200">
-              <div class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
-                <%= current_user.email.first.upcase %>
-              </div>
-              <span><%= current_user.email %></span>
-              <i class="fas fa-chevron-down text-xs"></i>
-            </button>
-
-            <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-              <div class="py-1">
-                <%= button_to destroy_user_session_path, method: :delete, class: "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" do %>
-                  <i class="fas fa-sign-out-alt mr-2"></i>
-                  Sign out
-                <% end %>
-              </div>
-            </div>
-          </div>
+          <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
         <% elsif school_owner_signed_in? %>
-          <div class="flex items-center space-x-4">
-            <div class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
-              <%= current_school_owner.email.first.upcase %>
-            </div>
-            <span class="text-gray-700"><%= current_school_owner.email %></span>
-            <%= button_to destroy_school_owner_session_path, method: :delete, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700" do %>
-              <i class="fas fa-sign-out-alt mr-2"></i>
-              Sign out
-            <% end %>
-          </div>
+          <%= button_to "Sign Out", destroy_school_owner_session_path, method: :delete, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
         <% else %>
-          <div class="flex items-center space-x-4">
-            <%= link_to new_user_session_path, class: "text-gray-600 hover:text-gray-900 transition-colors duration-200" do %>
-              <i class="fas fa-user mr-1"></i>
-              Login
-            <% end %>
-            <%= link_to new_school_owner_session_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" do %>
-              <i class="fas fa-school mr-1"></i>
-              School Owner Login
-            <% end %>
-          </div>
+          <%= link_to 'Login', new_user_session_path, class: 'text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium' %>
         <% end %>
       </div>
     </div>
   </div>
-</nav> 
+  <!-- Mobile menu, show/hide based on menu state. -->
+  <div id="mobile-menu" class="lg:hidden hidden bg-white border-t border-gray-200">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      <%= link_to 'Dashboard', root_path, class: 'block text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium' %>
+      <%= link_to 'About', about_path, class: 'block text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium' %>
+      <% if user_signed_in? %>
+        <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "block text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-base font-medium" %>
+      <% elsif school_owner_signed_in? %>
+        <%= button_to "Sign Out", destroy_school_owner_session_path, method: :delete, class: "block text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-base font-medium" %>
+      <% else %>
+        <%= link_to 'Login', new_user_session_path, class: 'block text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium' %>
+      <% end %>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var menuButton = document.getElementById('mobile-menu-button');
+      var mobileMenu = document.getElementById('mobile-menu');
+      if (menuButton && mobileMenu) {
+        menuButton.addEventListener('click', function() {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+    });
+  </script>
+</nav>
+<div class="h-16"></div> <!-- Spacer for fixed navbar --> 

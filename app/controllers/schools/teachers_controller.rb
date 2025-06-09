@@ -1,6 +1,6 @@
 module Schools
   class TeachersController < ApplicationController
-    before_action :authenticate_user!
+    before_action :authenticate_school_owner!
     before_action :check_feature_enabled
     before_action :set_teacher, only: [:show, :edit, :update, :destroy]
 
@@ -52,8 +52,8 @@ module Schools
     end
 
     def check_feature_enabled
-      unless feature_enabled?(:employee_management)
-        redirect_to root_path, alert: 'Employee management feature is not enabled for this school.'
+      unless feature_enabled?(:teachers)
+        redirect_to root_path, alert: 'Teachers feature is not enabled for this school.'
       end
     end
   end
