@@ -150,72 +150,6 @@ rescue => e
   raise e
 end
 
-# Create Students
-puts "Creating students..."
-begin
-  # Student 1
-  student1_user = User.create!(
-    first_name: 'Alex',
-    last_name: 'Johnson',
-    email: 'student@example.com',
-    password: 'password123',
-    role: :student,
-    school: school1
-  )
-  student1 = Student.create!(
-    user_id: student1_user.id,
-    first_name: 'Alex',
-    last_name: 'Johnson',
-    email: 'student@example.com',
-    school: school1,
-    password: 'password123',
-    admission_number: 'ST001',
-    class_section: '10A',
-    date_of_birth: '2005-05-15'
-  )
-
-  # Student 2
-  student2_user = User.create!(
-    first_name: 'Emma',
-    last_name: 'Williams',
-    email: 'student2@example.com',
-    password: 'password123',
-    role: :student,
-    school: school1
-  )
-  student2 = Student.create!(
-    user_id: student2_user.id,
-    first_name: 'Emma',
-    last_name: 'Williams',
-    email: 'student2@example.com',
-    school: school1,
-    password: 'password123',
-    admission_number: 'ST002',
-    class_section: '10B',
-    date_of_birth: '2005-06-20'
-  )
-rescue => e
-  puts "Error creating students: #{e.message}"
-  raise e
-end
-
-# Associate Schools with School Owners
-puts "Associating schools with owners..."
-begin
-  SchoolOwnerSchool.create!(
-    school_owner: school_owner1,
-    school: school1
-  )
-
-  SchoolOwnerSchool.create!(
-    school_owner: school_owner2,
-    school: school2
-  )
-rescue => e
-  puts "Error creating school owner associations: #{e.message}"
-  raise e
-end
-
 # Create School Classes
 puts "Creating school classes..."
 begin
@@ -242,6 +176,87 @@ rescue => e
   raise e
 end
 
+# Create Students
+puts "Creating students..."
+begin
+  # Student 1
+  student1_user = User.create!(
+    first_name: 'Alex',
+    last_name: 'Johnson',
+    email: 'student@example.com',
+    password: 'password123',
+    role: :student,
+    school: school1
+  )
+  student1 = Student.create!(
+    user_id: student1_user.id,
+    first_name: 'Alex',
+    last_name: 'Johnson',
+    email: 'student@example.com',
+    school: school1,
+    password: 'password123',
+    admission_number: 'ST001',
+    class_section: '10A',
+    date_of_birth: '2005-05-15',
+    roll_number: '1',
+    gender: 'male',
+    address: '123 Main St, Cityville',
+    parent_name: 'Michael Johnson',
+    parent_phone: '555-1234',
+    parent_email: 'michael.johnson@example.com',
+    school_class_id: class1.id
+  )
+
+  # Student 2
+  student2_user = User.create!(
+    first_name: 'Emma',
+    last_name: 'Williams',
+    email: 'student2@example.com',
+    password: 'password123',
+    role: :student,
+    school: school1
+  )
+  student2 = Student.create!(
+    user_id: student2_user.id,
+    first_name: 'Emma',
+    last_name: 'Williams',
+    email: 'student2@example.com',
+    school: school1,
+    password: 'password123',
+    admission_number: 'ST002',
+    class_section: '10B',
+    date_of_birth: '2005-06-20',
+    roll_number: '2',
+    gender: 'female',
+    address: '456 Oak Ave, Townsville',
+    parent_name: 'Sarah Williams',
+    parent_phone: '555-5678',
+    parent_email: 'sarah.williams@example.com',
+    school_class_id: class2.id
+  )
+rescue => e
+  puts "Error creating students: #{e.message}"
+  raise e
+end
+
+# Associate Schools with School Owners
+puts "Associating schools with owners..."
+begin
+  SchoolOwnerSchool.create!(
+    school_owner: school_owner1,
+    school: school1
+  )
+
+  SchoolOwnerSchool.create!(
+    school_owner: school_owner2,
+    school: school2
+  )
+  
+rescue => e
+  puts "Error creating school owner associations: #{e.message}"
+  raise e
+end
+
 # Associate Teachers with Classes
 puts "Associating teachers with classes..."
 begin
@@ -252,15 +267,20 @@ rescue => e
   raise e
 end
 
-# Associate Students with Classes
-puts "Associating students with classes..."
+# Associate Schools with School Owners
+puts "Associating schools with owners..."
 begin
-  StudentClass.create!(student: student1, school_class: class1)
-  StudentClass.create!(student: student2, school_class: class2)
+  # school_owner1 owns both schools
+  SchoolOwnerSchool.find_or_create_by!(school_owner: school_owner1, school: school1)
+  SchoolOwnerSchool.find_or_create_by!(school_owner: school_owner1, school: school2)
+
+  # school_owner2 owns just school2
+  SchoolOwnerSchool.find_or_create_by!(school_owner: school_owner2, school: school2)
 rescue => e
-  puts "Error associating students with classes: #{e.message}"
+  puts "Error creating school owner associations: #{e.message}"
   raise e
 end
+
 
 puts "Seed data created successfully!"
 puts "\nTest Accounts:"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_09_090924) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_09_094400) do
   create_table "attendance_records", force: :cascade do |t|
     t.date "date", null: false
     t.string "status", null: false
@@ -249,8 +249,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_09_090924) do
     t.string "phone_number"
     t.integer "user_id"
     t.integer "school_class_id"
+    t.string "roll_number"
+    t.string "gender"
+    t.string "address"
+    t.string "parent_name"
+    t.string "parent_phone"
+    t.string "parent_email"
     t.index ["email"], name: "index_students_on_email", unique: true
     t.index ["reset_password_token"], name: "index_students_on_reset_password_token", unique: true
+    t.index ["roll_number", "school_class_id"], name: "index_students_on_roll_number_and_school_class_id", unique: true
     t.index ["school_class_id"], name: "index_students_on_school_class_id"
     t.index ["school_id"], name: "index_students_on_school_id"
     t.index ["user_id"], name: "index_students_on_user_id"
