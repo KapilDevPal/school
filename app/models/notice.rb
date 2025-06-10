@@ -1,6 +1,7 @@
 class Notice < ApplicationRecord
   belongs_to :school
   belongs_to :user, optional: true
+  belongs_to :teacher, optional: true
 
   validates :title, presence: true
   validates :content, presence: true

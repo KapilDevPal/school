@@ -1,50 +1,72 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <div class="px-4 py-5 sm:px-6">
-      <h3 class="text-lg leading-6 font-medium text-gray-900">Leave Application Details</h3>
-      <p class="mt-1 max-w-2xl text-sm text-gray-500">Submitted on <%= @leave_application.created_at.strftime("%B %d, %Y") %></p>
+  <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
+      <div class="px-4 sm:px-0">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Leave Application Details</h3>
+        <p class="mt-1 text-sm text-gray-600">View the details of your leave application.</p>
+      </div>
     </div>
-    <div class="border-t border-gray-200">
-      <dl>
-        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">Leave Type</dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @leave_application.leave_type.titleize %></dd>
-        </div>
-        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">Start Date</dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @leave_application.start_date.strftime("%B %d, %Y") %></dd>
-        </div>
-        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">End Date</dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @leave_application.end_date.strftime("%B %d, %Y") %></dd>
-        </div>
-        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">Status</dt>
-          <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
-            <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 <%= @leave_application.status == 'approved' ? 'bg-green-100 text-green-800' : @leave_application.status == 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800' %>">
-              <%= @leave_application.status.titleize %>
-            </span>
-          </dd>
-        </div>
-        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">Contact Number</dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @leave_application.contact_number %></dd>
-        </div>
-        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">Reason</dt>
-          <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @leave_application.reason %></dd>
-        </div>
-        <% if @leave_application.admin_remarks.present? %>
-          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">Admin Remarks</dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @leave_application.admin_remarks %></dd>
-          </div>
-        <% end %>
-      </dl>
-    </div>
-  </div>
 
-  <div class="mt-6">
-    <%= link_to "Back to Applications", teacher_leave_applications_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    <div class="mt-5 md:mt-0 md:col-span-2">
+      <div class="shadow sm:rounded-md sm:overflow-hidden">
+        <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+          <div class="grid grid-cols-6 gap-6">
+            <div class="col-span-6 sm:col-span-3">
+              <h4 class="text-sm font-medium text-gray-500">Leave Type</h4>
+              <p class="mt-1 text-sm text-gray-900"><%= @leave_application.leave_type.titleize %></p>
+            </div>
+
+            <div class="col-span-6 sm:col-span-3">
+              <h4 class="text-sm font-medium text-gray-500">Status</h4>
+              <p class="mt-1">
+                <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 <%= application_status_class(@leave_application.status) %>">
+                  <%= @leave_application.status.titleize %>
+                </span>
+              </p>
+            </div>
+
+            <div class="col-span-6 sm:col-span-3">
+              <h4 class="text-sm font-medium text-gray-500">Start Date</h4>
+              <p class="mt-1 text-sm text-gray-900"><%= @leave_application.start_date.strftime("%B %d, %Y") %></p>
+            </div>
+
+            <div class="col-span-6 sm:col-span-3">
+              <h4 class="text-sm font-medium text-gray-500">End Date</h4>
+              <p class="mt-1 text-sm text-gray-900"><%= @leave_application.end_date.strftime("%B %d, %Y") %></p>
+            </div>
+
+            <div class="col-span-6 sm:col-span-3">
+              <h4 class="text-sm font-medium text-gray-500">Duration</h4>
+              <p class="mt-1 text-sm text-gray-900">
+                <%= pluralize((@leave_application.end_date - @leave_application.start_date).to_i + 1, 'day') %>
+              </p>
+            </div>
+
+            <div class="col-span-6 sm:col-span-3">
+              <h4 class="text-sm font-medium text-gray-500">Contact Number</h4>
+              <p class="mt-1 text-sm text-gray-900"><%= @leave_application.contact_number %></p>
+            </div>
+
+            <div class="col-span-6">
+              <h4 class="text-sm font-medium text-gray-500">Reason</h4>
+              <p class="mt-1 text-sm text-gray-900"><%= @leave_application.reason %></p>
+            </div>
+
+            <% if @leave_application.admin_comment.present? %>
+              <div class="col-span-6">
+                <h4 class="text-sm font-medium text-gray-500">Admin Comment</h4>
+                <p class="mt-1 text-sm text-gray-900"><%= @leave_application.admin_comment %></p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+          <%= link_to "Back to List", teachers_leave_applications_path, class: "inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <% if @leave_application.status == 'pending' %>
+            <%= link_to "Edit", edit_teachers_leave_application_path(@leave_application), class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
 </div> 

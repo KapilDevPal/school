@@ -3,8 +3,8 @@
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold">Teacher Details</h1>
       <div class="space-x-3">
-        <%= link_to 'Edit', edit_schools_teacher_path(@teacher), class: 'text-yellow-600 hover:text-yellow-900' %>
-        <%= link_to 'Back to Teachers', schools_teachers_path, class: 'text-indigo-600 hover:text-indigo-900' %>
+        <%= link_to 'Edit', edit_schools_school_teacher_path(@school, @teacher), class: 'text-yellow-600 hover:text-yellow-900' %>
+        <%= link_to 'Back to Teachers', schools_school_teachers_path(@school), class: 'text-indigo-600 hover:text-indigo-900' %>
       </div>
     </div>
 

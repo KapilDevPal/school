@@ -257,30 +257,44 @@ rescue => e
   raise e
 end
 
-# Associate Teachers with Classes
-puts "Associating teachers with classes..."
-begin
-  TeacherClass.create!(teacher: teacher1, school_class: class1)
-  TeacherClass.create!(teacher: teacher2, school_class: class2)
-rescue => e
-  puts "Error associating teachers with classes: #{e.message}"
-  raise e
+# Create sample timetables
+school = School.first
+teacher = Teacher.first
+school_class = SchoolClass.first
+
+# Create subjects
+subjects = [
+  { name: 'Mathematics', code: 'MATH101' },
+  { name: 'Science', code: 'SCI101' },
+  { name: 'English', code: 'ENG101' },
+  { name: 'History', code: 'HIST101' },
+  { name: 'Geography', code: 'GEO101' }
+].map do |subject_data|
+  Subject.create!(
+    name: subject_data[:name],
+    code: subject_data[:code],
+    school: school,
+    credits: 3,
+    description: "#{subject_data[:name]} course for grade #{school_class.name}"
+  )
 end
 
-# Associate Schools with School Owners
-puts "Associating schools with owners..."
-begin
-  # school_owner1 owns both schools
-  SchoolOwnerSchool.find_or_create_by!(school_owner: school_owner1, school: school1)
-  SchoolOwnerSchool.find_or_create_by!(school_owner: school_owner1, school: school2)
-
-  # school_owner2 owns just school2
-  SchoolOwnerSchool.find_or_create_by!(school_owner: school_owner2, school: school2)
-rescue => e
-  puts "Error creating school owner associations: #{e.message}"
-  raise e
+# Create timetables for each weekday (Monday to Friday)
+%w[Monday Tuesday Wednesday Thursday Friday].each do |day|
+  start_times = ['09:00', '10:00', '11:00', '12:00', '14:00', '15:00']
+  start_times.each_with_index do |time, index|
+    Timetable.create!(
+      school: school,
+      school_class: school_class,
+      subject: subjects[index % subjects.length],
+      teacher: teacher,
+      day_of_week: day,
+      start_time: Time.parse(time),
+      end_time: Time.parse(time) + 45.minutes,
+      room_number: "Room #{index + 1}"
+    )
+  end
 end
-
 
 puts "Seed data created successfully!"
 puts "\nTest Accounts:"

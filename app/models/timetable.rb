@@ -2,16 +2,19 @@ class Timetable < ApplicationRecord
   belongs_to :school
   belongs_to :school_class
   belongs_to :subject
-  belongs_to :teacher
+  belongs_to :teacher, optional: true
 
   validates :day_of_week, presence: true, inclusion: { in: %w[Monday Tuesday Wednesday Thursday Friday] }
-  validates :start_time, presence: true
-  validates :end_time, presence: true
+  validates :start_time, :end_time, presence: true
   validates :room_number, presence: true
   validate :end_time_after_start_time
   # validate :no_overlapping_schedules
 
   before_validation :set_school_from_class
+
+  def day_name
+    day_of_week
+  end
 
   private
 

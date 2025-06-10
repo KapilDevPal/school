@@ -16,6 +16,9 @@ class Student < ApplicationRecord
   has_many :exams, through: :exam_results
   has_many :fees, dependent: :destroy
   has_many :attendance_records, dependent: :destroy
+  has_many :assignments, through: :school_class
+  has_many :student_assignments
+  has_many :submitted_assignments, through: :student_assignments, source: :assignment
 
   validates :email, presence: true, uniqueness: { scope: :school_id }
   validates :school, presence: true

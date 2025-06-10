@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_09_094400) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_10_075715) do
   create_table "attendance_records", force: :cascade do |t|
     t.date "date", null: false
     t.string "status", null: false
@@ -107,6 +107,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_09_094400) do
     t.text "admin_comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "leave_type"
+    t.string "contact_number"
     t.index ["school_id"], name: "index_leave_applications_on_school_id"
     t.index ["teacher_id"], name: "index_leave_applications_on_teacher_id"
   end
@@ -121,6 +123,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_09_094400) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "teacher_id"
     t.index ["school_id", "start_date", "end_date"], name: "index_notices_on_school_id_and_start_date_and_end_date"
     t.index ["school_id"], name: "index_notices_on_school_id"
     t.index ["user_id"], name: "index_notices_on_user_id"

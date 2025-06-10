@@ -2,10 +2,10 @@
   <div class="sm:flex sm:items-center">
     <div class="sm:flex-auto">
       <h1 class="text-xl font-semibold text-gray-900">Leave Applications</h1>
-      <p class="mt-2 text-sm text-gray-700">A list of all your leave applications and their status.</p>
+      <p class="mt-2 text-sm text-gray-700">A list of all your leave applications and their current status.</p>
     </div>
     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-      <%= link_to "New Leave Application", new_teacher_leave_application_path, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
+      <%= link_to "New Application", new_teachers_leave_application_path, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
     </div>
   </div>
 
@@ -19,10 +19,11 @@
                 <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Leave Type</th>
                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Start Date</th>
                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">End Date</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Duration</th>
                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Applied On</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Reason</th>
                 <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                  <span class="sr-only">View</span>
+                  <span class="sr-only">Actions</span>
                 </th>
               </tr>
             </thead>
@@ -38,16 +39,19 @@
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     <%= application.end_date.strftime("%B %d, %Y") %>
                   </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= pluralize((application.end_date - application.start_date).to_i + 1, 'day') %>
+                  </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm">
-                    <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 <%= application.status == 'approved' ? 'bg-green-100 text-green-800' : application.status == 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800' %>">
+                    <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 <%= application_status_class(application.status) %>">
                       <%= application.status.titleize %>
                     </span>
                   </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <%= application.created_at.strftime("%B %d, %Y") %>
+                  <td class="px-3 py-4 text-sm text-gray-500">
+                    <%= truncate(application.reason, length: 50) %>
                   </td>
                   <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <%= link_to "View", teacher_leave_application_path(application), class: "text-indigo-600 hover:text-indigo-900" %>
+                    <%= link_to "View", teachers_leave_application_path(application), class: "text-indigo-600 hover:text-indigo-900" %>
                   </td>
                 </tr>
               <% end %>

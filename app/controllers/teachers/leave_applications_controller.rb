@@ -14,6 +14,7 @@ module Teachers
 
     def create
       @leave_application = @teacher.leave_applications.build(leave_application_params)
+      @leave_application.school = @teacher.school
 
       if @leave_application.save
         redirect_to teachers_leave_application_path(@leave_application), notice: 'Leave application was successfully created.'
@@ -52,7 +53,14 @@ module Teachers
     end
 
     def leave_application_params
-      params.require(:leave_application).permit(:start_date, :end_date, :reason, :status)
+      params.require(:leave_application).permit(
+        :start_date,
+        :end_date,
+        :reason,
+        :status,
+        :leave_type,
+        :contact_number
+      )
     end
   end
 end 

@@ -116,5 +116,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
+  get 'school_owner', to: 'school_owners#show'
   resources :school_owners, only: [:show, :edit, :update]
 end

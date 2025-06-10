@@ -2,24 +2,25 @@ module Schools
   class TeachersController < ApplicationController
     before_action :authenticate_school_owner!
     before_action :check_feature_enabled
+    before_action :set_school
     before_action :set_teacher, only: [:show, :edit, :update, :destroy]
 
     def index
-      @teachers = current_school.teachers
+      @teachers = @school.teachers
     end
 
     def show
     end
 
     def new
-      @teacher = current_school.teachers.build
+      @teacher = @school.teachers.build
     end
 
     def create
-      @teacher = current_school.teachers.build(teacher_params)
+      @teacher = @school.teachers.build(teacher_params)
 
       if @teacher.save
-        redirect_to schools_teachers_path, notice: 'Teacher was successfully created.'
+        redirect_to schools_school_teachers_path(@school), notice: 'Teacher was successfully created.'
       else
         render :new, status: :unprocessable_entity
       end
@@ -30,7 +31,7 @@ module Schools
 
     def update
       if @teacher.update(teacher_params)
-        redirect_to schools_teachers_path, notice: 'Teacher was successfully updated.'
+        redirect_to schools_school_teachers_path(@school), notice: 'Teacher was successfully updated.'
       else
         render :edit, status: :unprocessable_entity
       end
@@ -38,13 +39,17 @@ module Schools
 
     def destroy
       @teacher.destroy
-      redirect_to schools_teachers_path, notice: 'Teacher was successfully deleted.'
+      redirect_to schools_school_teachers_path(@school), notice: 'Teacher was successfully deleted.'
     end
 
     private
 
+    def set_school
+      @school = current_school
+    end
+
     def set_teacher
-      @teacher = current_school.teachers.find(params[:id])
+      @teacher = @school.teachers.find(params[:id])
     end
 
     def teacher_params

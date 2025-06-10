@@ -3,9 +3,10 @@ module Teachers
     before_action :authenticate_user!
     before_action :set_teacher
     before_action :set_student, only: [:show]
+    before_action :set_school
 
     def index
-      @school_classes = @teacher.school_classes.includes(students: [:attendance_records, :exam_results, :assignments])
+      @school_classes = @teacher.school_classes.includes(:students)
     end
 
     def show
@@ -22,6 +23,10 @@ module Teachers
 
     def set_student
       @student = Student.find(params[:id])
+    end
+
+    def set_school
+      @school = @teacher.school
     end
   end
 end 

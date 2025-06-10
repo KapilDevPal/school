@@ -2,24 +2,25 @@ module Schools
   class StudentsController < ApplicationController
     before_action :authenticate_school_owner!
     before_action :check_feature_enabled
+    before_action :set_school
     before_action :set_student, only: [:show, :edit, :update, :destroy]
 
     def index
-      @students = current_school.students
+      @students = @school.students
     end
 
     def show
     end
 
     def new
-      @student = current_school.students.build
+      @student = @school.students.build
     end
 
     def create
-      @student = current_school.students.build(student_params)
+      @student = @school.students.build(student_params)
 
       if @student.save
-        redirect_to schools_students_path, notice: 'Student was successfully created.'
+        redirect_to schools_school_students_path(@school), notice: 'Student was successfully created.'
       else
         render :new, status: :unprocessable_entity
       end
@@ -30,7 +31,7 @@ module Schools
 
     def update
       if @student.update(student_params)
-        redirect_to schools_students_path, notice: 'Student was successfully updated.'
+        redirect_to schools_school_students_path(@school), notice: 'Student was successfully updated.'
       else
         render :edit, status: :unprocessable_entity
       end
@@ -38,13 +39,17 @@ module Schools
 
     def destroy
       @student.destroy
-      redirect_to schools_students_path, notice: 'Student was successfully deleted.'
+      redirect_to schools_school_students_path(@school), notice: 'Student was successfully deleted.'
     end
 
     private
 
+    def set_school
+      @school = current_school
+    end
+
     def set_student
-      @student = current_school.students.find(params[:id])
+      @student = @school.students.find(params[:id])
     end
 
     def student_params
