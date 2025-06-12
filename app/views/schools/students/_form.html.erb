@@ -34,8 +34,16 @@
     <div><%= f.label :date_of_birth, class: "block text-sm font-medium text-gray-700" %>
       <%= f.date_field :date_of_birth, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %></div>
 
-    <div><%= f.label :gender, class: "block text-sm font-medium text-gray-700" %>
-      <%= f.select :gender, options_for_select([['Male', 'male'], ['Female', 'female'], ['Other', 'other']]), { include_blank: 'Select gender' }, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %></div>
+      <div><%= f.label :gender, class: "block text-sm font-medium text-gray-700" %>
+            <%= f.select :gender, 
+          options_for_select(
+            [['Male', 'male'], ['Female', 'female'], ['Other', 'other']], 
+            @student.gender
+          ), 
+          { include_blank: 'Select gender' }, 
+          class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+      </div>
+      
 
     <div><%= f.label :admission_number, class: "block text-sm font-medium text-gray-700" %>
       <%= f.text_field :admission_number, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %></div>
