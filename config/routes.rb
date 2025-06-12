@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   root 'pages#landing'
   get 'about', to: 'pages#about'
+  get 'contact', to: 'pages#contact'
 
   # Custom login routes within devise_scope
   devise_scope :user do
@@ -91,7 +92,7 @@ Rails.application.routes.draw do
     resources :leave_applications
     resources :teaching_materials
     resources :student_progress, only: [:index, :show]
-    resources :notices
+    resources :notices, as: 'teacher_notices'
     resources :school_classes, only: [:index, :show]
     resource :profile, only: [:show, :edit, :update]
   end

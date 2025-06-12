@@ -1,4 +1,4 @@
-module Student
+module Students
   class AcademicProgressController < ApplicationController
     before_action :authenticate_user!
     before_action :ensure_student

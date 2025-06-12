@@ -7,8 +7,8 @@
           <p class="mt-1 max-w-2xl text-sm text-gray-500">Posted on <%= @notice.created_at.strftime("%B %d, %Y") %></p>
         </div>
         <div class="flex space-x-3">
-          <%= link_to "Edit", edit_teacher_notice_path(@notice), class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-          <%= button_to "Delete", teacher_notice_path(@notice), method: :delete, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500", form: { data: { turbo_confirm: "Are you sure you want to delete this notice?" } } %>
+          <%= link_to "Edit", edit_teachers_notice_path(@notice), class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <%= button_to "Delete", teachers_notice_path(@notice), method: :delete, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500", form: { data: { turbo_confirm: "Are you sure you want to delete this notice?" } } %>
         </div>
       </div>
     </div>
@@ -49,6 +49,6 @@
   </div>
 
   <div class="mt-6">
-    <%= link_to "Back to Notices", teacher_notices_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    <%= link_to "Back to Notices", teachers_notices_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
   </div>
 </div> 

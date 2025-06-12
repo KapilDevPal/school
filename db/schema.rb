@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_10_075715) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_12_100724) do
   create_table "attendance_records", force: :cascade do |t|
     t.date "date", null: false
     t.string "status", null: false
@@ -113,20 +113,37 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_10_075715) do
     t.index ["teacher_id"], name: "index_leave_applications_on_teacher_id"
   end
 
+  create_table "notice_school_classes", force: :cascade do |t|
+    t.integer "notice_id", null: false
+    t.integer "school_class_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notice_id", "school_class_id"], name: "index_notice_school_classes_on_notice_id_and_school_class_id", unique: true
+    t.index ["notice_id"], name: "index_notice_school_classes_on_notice_id"
+    t.index ["school_class_id"], name: "index_notice_school_classes_on_school_class_id"
+  end
+
   create_table "notices", force: :cascade do |t|
     t.string "title", null: false
     t.text "content", null: false
-    t.date "start_date", null: false
-    t.date "end_date", null: false
-    t.string "priority", default: "medium", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.string "priority", default: "medium"
     t.integer "school_id", null: false
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "teacher_id"
+    t.string "notice_type"
+    t.string "target_audience"
     t.index ["school_id", "start_date", "end_date"], name: "index_notices_on_school_id_and_start_date_and_end_date"
     t.index ["school_id"], name: "index_notices_on_school_id"
     t.index ["user_id"], name: "index_notices_on_user_id"
+  end
+
+  create_table "notices_school_classes", id: false, force: :cascade do |t|
+    t.integer "notice_id", null: false
+    t.integer "school_class_id", null: false
   end
 
   create_table "payslips", force: :cascade do |t|
@@ -313,6 +330,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_10_075715) do
     t.string "qualification"
     t.integer "experience"
     t.string "specialization"
+    t.string "gender"
+    t.text "address"
     t.index ["email", "school_id"], name: "index_teachers_on_email_and_school_id", unique: true
     t.index ["school_id"], name: "index_teachers_on_school_id"
     t.index ["user_id"], name: "index_teachers_on_user_id"
@@ -384,6 +403,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_10_075715) do
   add_foreign_key "inventory_transactions", "schools"
   add_foreign_key "leave_applications", "schools"
   add_foreign_key "leave_applications", "teachers"
+  add_foreign_key "notice_school_classes", "notices"
+  add_foreign_key "notice_school_classes", "school_classes"
   add_foreign_key "notices", "schools"
   add_foreign_key "notices", "users"
   add_foreign_key "payslips", "salary_structures"

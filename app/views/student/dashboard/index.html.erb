@@ -1,169 +1,126 @@
-<div class="min-h-screen bg-gray-100">
-  <div class="py-6">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 class="text-2xl font-semibold text-gray-900">Student Dashboard</h1>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <h1 class="text-2xl font-semibold text-gray-900">Welcome, <%= @student.first_name %>!</h1>
+    <p class="mt-1 text-sm text-gray-500">Here's an overview of your academic activities.</p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <!-- Upcoming Classes -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Upcoming Classes</h3>
+        <div class="mt-4">
+          <% if @upcoming_classes.any? %>
+            <ul class="divide-y divide-gray-200">
+              <% @upcoming_classes.each do |class_record| %>
+                <li class="py-4">
+                  <div class="flex items-center space-x-4">
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-gray-900 truncate">
+                        <%= class_record.name %>
+                      </p>
+                      <p class="text-sm text-gray-500">
+                        <%= class_record.timetables.first.start_time.strftime("%B %d, %Y at %I:%M %p") %>
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-sm text-gray-500">No upcoming classes scheduled.</p>
+          <% end %>
+        </div>
+      </div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-      <!-- Welcome Section -->
-      <div class="py-4">
-        <div class="bg-white shadow rounded-lg p-6">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <div class="h-12 w-12 rounded-full bg-indigo-600 flex items-center justify-center">
-                <span class="text-white text-xl font-bold"><%= @student.email.first.upcase %></span>
-              </div>
-            </div>
-            <div class="ml-4">
-              <h2 class="text-xl font-semibold text-gray-900">Welcome, <%= @student.email %></h2>
-              <p class="text-sm text-gray-500">Student at <%= @student.school.name %></p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Quick Stats -->
-      <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- Classes Card -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-          <div class="p-5">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <i class="fas fa-book text-indigo-600 text-2xl"></i>
-              </div>
-              <div class="ml-5 w-0 flex-1">
-                <dl>
-                  <dt class="text-sm font-medium text-gray-500 truncate">Total Classes</dt>
-                  <dd class="text-lg font-semibold text-gray-900"><%= @student.classes.count %></dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-50 px-5 py-3">
-            <%= link_to student_timetables_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" do %>
-              View timetable
-            <% end %>
-          </div>
-        </div>
-        <!-- Attendance Card -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-          <div class="p-5">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <i class="fas fa-clipboard-check text-green-600 text-2xl"></i>
-              </div>
-              <div class="ml-5 w-0 flex-1">
-                <dl>
-                  <dt class="text-sm font-medium text-gray-500 truncate">Attendance Rate</dt>
-                  <dd class="text-lg font-semibold text-gray-900">
-                    <%= number_to_percentage(@student.attendance_records.where(status: 'present').count.to_f / @student.attendance_records.count * 100, precision: 1) rescue '0%' %>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-50 px-5 py-3">
-            <%= link_to student_academic_progress_path(@student), class: "text-sm font-medium text-green-600 hover:text-green-500" do %>
-              View attendance details
-            <% end %>
-          </div>
-        </div>
-        <!-- Fees Card -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-          <div class="p-5">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <i class="fas fa-money-bill-wave text-yellow-600 text-2xl"></i>
-              </div>
-              <div class="ml-5 w-0 flex-1">
-                <dl>
-                  <dt class="text-sm font-medium text-gray-500 truncate">Pending Fees</dt>
-                  <dd class="text-lg font-semibold text-gray-900"><%= @fees_due.count %></dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-50 px-5 py-3">
-            <%= link_to student_fees_path, class: "text-sm font-medium text-yellow-600 hover:text-yellow-500" do %>
-              View fees
-            <% end %>
-          </div>
-        </div>
-      </div>
-
-      <!-- Today's Classes -->
-      <div class="mt-8">
-        <div class="bg-white shadow rounded-lg">
-          <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Today's Classes</h3>
-          </div>
-          <div class="border-t border-gray-200">
-            <div class="bg-white divide-y divide-gray-200">
-              <% if @upcoming_classes.any? %>
-                <% @upcoming_classes.each do |class_record| %>
-                  <div class="px-4 py-4 sm:px-6">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                      <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                          <i class="fas fa-chalkboard text-indigo-600"></i>
-                        </div>
-                        <div class="ml-4">
-                          <h4 class="text-sm font-medium text-gray-900"><%= class_record.name %></h4>
-                          <p class="text-sm text-gray-500">
-                            <%= class_record.timetables.first&.start_time&.strftime("%I:%M %p") %> - 
-                            <%= class_record.timetables.first&.end_time&.strftime("%I:%M %p") %>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="flex items-center space-x-4 mt-2 sm:mt-0">
-                        <%= link_to student_academic_progress_path(@student), class: "text-indigo-600 hover:text-indigo-900" do %>
-                          <i class="fas fa-chart-line"></i>
-                        <% end %>
-                      </div>
+    <!-- Recent Attendance -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Recent Attendance</h3>
+        <div class="mt-4">
+          <% if @recent_attendance.any? %>
+            <ul class="divide-y divide-gray-200">
+              <% @recent_attendance.each do |record| %>
+                <li class="py-4">
+                  <div class="flex items-center space-x-4">
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-gray-900 truncate">
+                        <%= record.date.strftime("%B %d, %Y") %>
+                      </p>
+                      <p class="text-sm text-gray-500">
+                        Status: <span class="<%= record.status == 'present' ? 'text-green-600' : 'text-red-600' %>">
+                          <%= record.status.titleize %>
+                        </span>
+                      </p>
                     </div>
                   </div>
-                <% end %>
-              <% else %>
-                <div class="px-4 py-4 sm:px-6 text-center text-gray-500">
-                  No classes today
-                </div>
+                </li>
               <% end %>
-            </div>
-          </div>
+            </ul>
+          <% else %>
+            <p class="text-sm text-gray-500">No recent attendance records.</p>
+          <% end %>
         </div>
       </div>
+    </div>
 
-      <!-- Recent Notices -->
-      <div class="mt-8">
-        <div class="bg-white shadow rounded-lg">
-          <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Recent Notices</h3>
-          </div>
-          <div class="border-t border-gray-200">
-            <div class="bg-white divide-y divide-gray-200">
-              <% if @notices.any? %>
-                <% @notices.each do |notice| %>
-                  <div class="px-4 py-4 sm:px-6">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                      <div>
-                        <h4 class="text-sm font-medium text-gray-900"><%= notice.title %></h4>
-                        <p class="text-sm text-gray-500"><%= notice.content %></p>
-                        <p class="text-xs text-gray-400 mt-1">
-                          Posted <%= time_ago_in_words(notice.created_at) %> ago
-                        </p>
-                      </div>
-                      <%= link_to student_notice_path(notice), class: "text-indigo-600 hover:text-indigo-900 mt-2 sm:mt-0" do %>
-                        <i class="fas fa-eye"></i>
-                      <% end %>
+    <!-- Recent Notices -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Recent Notices</h3>
+        <div class="mt-4">
+          <% if @notices.any? %>
+            <ul class="divide-y divide-gray-200">
+              <% @notices.each do |notice| %>
+                <li class="py-4">
+                  <div class="flex items-center space-x-4">
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-gray-900 truncate">
+                        <%= notice.title %>
+                      </p>
+                      <p class="text-sm text-gray-500">
+                        Posted on <%= notice.created_at.strftime("%B %d, %Y") %>
+                      </p>
                     </div>
+                    <%= link_to "View", student_notice_path(notice), class: "text-sm text-indigo-600 hover:text-indigo-900" %>
                   </div>
-                <% end %>
-              <% else %>
-                <div class="px-4 py-4 sm:px-6 text-center text-gray-500">
-                  No recent notices
-                </div>
+                </li>
               <% end %>
-            </div>
-          </div>
+            </ul>
+          <% else %>
+            <p class="text-sm text-gray-500">No recent notices.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fees Due -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Fees Due</h3>
+        <div class="mt-4">
+          <% if @fees_due.any? %>
+            <ul class="divide-y divide-gray-200">
+              <% @fees_due.each do |fee| %>
+                <li class="py-4">
+                  <div class="flex items-center space-x-4">
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-gray-900 truncate">
+                        Fee Payment
+                      </p>
+                      <p class="text-sm text-gray-500">
+                        Due: <%= fee.due_date.strftime("%B %d, %Y") %> | Amount: ₹<%= fee.amount %> | Status: <span class="<%= fee.status == 'paid' ? 'text-green-600' : fee.status == 'overdue' ? 'text-red-600' : 'text-yellow-600' %>"><%= fee.status.titleize %></span>
+                      </p>
+                    </div>
+                    <%= link_to "View", student_fee_path(fee), class: "text-sm text-indigo-600 hover:text-indigo-900" %>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-sm text-gray-500">No fees due at the moment.</p>
+          <% end %>
         </div>
       </div>
     </div>

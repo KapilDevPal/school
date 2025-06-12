@@ -1,9 +1,13 @@
 module Schools
+
   class FeesController < ApplicationController
+
+  # class FeesController < ApplicationController
     before_action :set_fee, only: [:show, :edit, :update, :destroy]
+    before_action :set_students, only: [:new, :create, :edit, :update]
 
     def index
-      @fees = Fee.all
+      @fees = current_school.fees.includes(:student)
     end
 
     def show
@@ -17,12 +21,12 @@ module Schools
     end
 
     def create
-      @fee = Fee.new(fee_params)
+      @fee = current_school.fees.build(fee_params)
 
       if @fee.save
         redirect_to schools_fee_path(@fee), notice: 'Fee was successfully created.'
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -30,7 +34,7 @@ module Schools
       if @fee.update(fee_params)
         redirect_to schools_fee_path(@fee), notice: 'Fee was successfully updated.'
       else
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 
@@ -42,7 +46,11 @@ module Schools
     private
 
     def set_fee
-      @fee = Fee.find(params[:id])
+      @fee = current_school.fees.find(params[:id])
+    end
+
+    def set_students
+      @students = current_school.students
     end
 
     def fee_params

@@ -14,9 +14,10 @@ module Teachers
 
     def create
       @notice = @teacher.notices.build(notice_params)
+      @notice.school = @teacher.school
 
       if @notice.save
-        redirect_to teachers_notice_path(@notice), notice: 'Notice was successfully created.'
+        redirect_to teachers_teacher_notices_path, notice: 'Notice was successfully created.'
       else
         render :new, status: :unprocessable_entity
       end
@@ -30,7 +31,7 @@ module Teachers
 
     def update
       if @notice.update(notice_params)
-        redirect_to teachers_notice_path(@notice), notice: 'Notice was successfully updated.'
+        redirect_to teachers_teacher_notices_path, notice: 'Notice was successfully updated.'
       else
         render :edit, status: :unprocessable_entity
       end
@@ -38,7 +39,7 @@ module Teachers
 
     def destroy
       @notice.destroy
-      redirect_to teachers_notices_path, notice: 'Notice was successfully deleted.'
+      redirect_to teachers_teacher_notices_path, notice: 'Notice was successfully deleted.'
     end
 
     private
@@ -52,7 +53,7 @@ module Teachers
     end
 
     def notice_params
-      params.require(:notice).permit(:title, :content, :notice_type, :target_audience, school_class_ids: [])
+      params.require(:notice).permit(:title, :content, :priority)
     end
   end
 end 
