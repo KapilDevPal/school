@@ -85,70 +85,60 @@ end
 
 # Create Admin Users
 puts "Creating admin users..."
-begin
-  admin1 = User.create!(
-    first_name: 'Admin',
-    last_name: 'User',
-    email: 'admin@example.com',
-    password: 'password123',
-    role: :admin,
-    school: school1
-  )
-rescue => e
-  puts "Error creating admin users: #{e.message}"
-  raise e
-end
+admin_user = User.create!(
+  first_name: "Admin",
+  last_name: "User",
+  email: "admin@school.com",
+  password: "admin123",
+  role: :admin,
+  school: school1
+)
 
 # Create Teachers
 puts "Creating teachers..."
-begin
-  # Teacher 1
-  teacher1_user = User.create!(
-    first_name: "John",
-    last_name: "Doe",
-    email: "teacher@example.com",
-    password: "password123",
-    role: :teacher,
-    school: school1
-  )
-  teacher1 = Teacher.create!(
-    user_id: teacher1_user.id,
-    first_name: "John",
-    last_name: "Doe",
-    email: "teacher@example.com",
-    school: school1,
-    phone_number: '1112223333',
-    password: 'password123',
-    qualification: 'M.Ed',
-    experience: 5,
-    specialization: 'Mathematics'
-  )
+user1 = User.create!(
+  first_name: "John",
+  last_name: "Doe",
+  email: "john.doe@school.com",
+  password: "teacher123",
+  role: :teacher,
+  school: school1
+)
 
-  # Teacher 2
-  teacher2_user = User.create!(
-    first_name: 'Jane',
-    last_name: 'Smith',
-    email: 'teacher2@example.com',
-    password: 'password123',
-    role: :teacher,
-    school: school1
-  )
-  teacher2 = Teacher.create!(
-    user_id: teacher2_user.id,
-    first_name: 'Jane',
-    last_name: 'Smith',
-    email: 'teacher2@example.com',
-    phone_number: '4445556666',
-    school: school1,
-    password: 'password123',
-    qualification: 'B.Ed',
-    experience: 3,
-    specialization: 'English'
-  )
-rescue => e
-  puts "Error creating teachers: #{e.message}"
-  raise e
-end
+teacher1 = Teacher.create!(
+  user: user1,
+  first_name: "John",
+  last_name: "Doe",
+  email: "john.doe@school.com",
+  phone_number: "+1234567890",
+  password: "teacher123",
+  school: school1,
+  qualification: "M.Ed",
+  experience: 5,
+  specialization: "Mathematics" 
+)
+
+user2 = User.create!(
+  first_name: "Jane",
+  last_name: "Smith",
+  email: "jane.smith@school.com",
+  password: "teacher123",
+  role: :teacher,
+  school: school1
+)
+
+teacher2 = Teacher.create!(
+  user: user2,
+  first_name: "Jane",
+  last_name: "Smith",
+  email: "jane.smith@school.com",
+  phone_number: "+1234567891",
+  password: "teacher123",
+  school: school1,
+  qualification: "M.Sc",
+  experience: 3,
+  specialization: "Science"
+)
 
 # Create School Classes
 puts "Creating school classes..."
@@ -178,66 +168,63 @@ end
 
 # Create Students
 puts "Creating students..."
-begin
-  # Student 1
-  student1_user = User.create!(
-    first_name: 'Alex',
-    last_name: 'Johnson',
-    email: 'student@example.com',
-    password: 'password123',
-    role: :student,
-    school: school1
-  )
-  student1 = Student.create!(
-    user_id: student1_user.id,
-    first_name: 'Alex',
-    last_name: 'Johnson',
-    email: 'student@example.com',
-    school: school1,
-    password: 'password123',
-    admission_number: 'ST001',
-    class_section: '10A',
-    date_of_birth: '2005-05-15',
-    roll_number: '1',
-    gender: 'male',
-    address: '123 Main St, Cityville',
-    parent_name: 'Michael Johnson',
-    parent_phone: '555-1234',
-    parent_email: 'michael.johnson@example.com',
-    school_class_id: class1.id
-  )
+user3 = User.create!(
+  first_name: "Alice",
+  last_name: "Johnson",
+  email: "alice.johnson@school.com",
+  password: "student123",
+  role: :student,
+  school: school1
+)
 
-  # Student 2
-  student2_user = User.create!(
-    first_name: 'Emma',
-    last_name: 'Williams',
-    email: 'student2@example.com',
-    password: 'password123',
-    role: :student,
-    school: school1
-  )
-  student2 = Student.create!(
-    user_id: student2_user.id,
-    first_name: 'Emma',
-    last_name: 'Williams',
-    email: 'student2@example.com',
-    school: school1,
-    password: 'password123',
-    admission_number: 'ST002',
-    class_section: '10B',
-    date_of_birth: '2005-06-20',
-    roll_number: '2',
-    gender: 'female',
-    address: '456 Oak Ave, Townsville',
-    parent_name: 'Sarah Williams',
-    parent_phone: '555-5678',
-    parent_email: 'sarah.williams@example.com',
-    school_class_id: class2.id
-  )
-rescue => e
-  puts "Error creating students: #{e.message}"
-  raise e
-end
+student1 = Student.create!(
+  user: user3,
+  first_name: "Alice",
+  last_name: "Johnson",
+  email: "alice.johnson@school.com",
+  phone_number: "+1234567892",
+  password: "student123",
+  school: school1,
+  admission_number: "S001",
+  roll_number: "1",
+  gender: "female",
+  date_of_birth: Date.new(2010, 1, 1),
+  parent_name: "Mary Johnson",
+  parent_phone: "+1234567893",
+  parent_email: "mary.johnson@email.com",
+  address: "123 Student Street, City",
+  class_section: "A",
+  school_class: class1
+)
+
+user4 = User.create!(
+  first_name: "Bob",
+  last_name: "Wilson",
+  email: "bob.wilson@school.com",
+  password: "student123",
+  role: :student,
+  school: school1
+)
+
+student2 = Student.create!(
+  user: user4,
+  first_name: "Bob",
+  last_name: "Wilson",
+  email: "bob.wilson@school.com",
+  phone_number: "+1234567894",
+  password: "student123",
+  school: school1,
+  admission_number: "S002",
+  roll_number: "2",
+  gender: "male",
+  date_of_birth: Date.new(2010, 2, 1),
+  parent_name: "John Wilson",
+  parent_phone: "+1234567895",
+  parent_email: "john.wilson@email.com",
+  address: "456 Student Avenue, City",
+  class_section: "B",
+  school_class: class2
+)
 
 # Associate Schools with School Owners
 puts "Associating schools with owners..."
