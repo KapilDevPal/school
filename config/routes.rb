@@ -82,6 +82,12 @@ Rails.application.routes.draw do
     resources :calendar
     resources :exams
     resource :module_settings, only: [:show, :update]
+    resources :leave_applications, only: [:index, :show] do
+      member do
+        post :approve
+        post :reject
+      end
+    end
   end
 
   # Teacher routes

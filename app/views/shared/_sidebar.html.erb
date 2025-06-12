@@ -143,6 +143,23 @@
           <% end %>
         <% end %>
 
+        <%= link_to schools_leave_applications_path, class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_leave_applications_path) ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" do %>
+          <div class="relative">
+            <svg class="mr-3 h-6 w-6 #{current_page?(schools_leave_applications_path) ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500'}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <% if current_school.leave_applications.pending.exists? %>
+              <span class="absolute -top-1 -right-1 flex h-4 w-4">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-xs text-white items-center justify-center">
+                  <%= current_school.leave_applications.pending.count %>
+                </span>
+              </span>
+            <% end %>
+          </div>
+          Leave Applications
+        <% end %>
+
         <%= link_to edit_school_owner_path(current_school_owner), class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(edit_school_owner_path(current_school_owner)) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
           <i class="fas fa-cog mr-3 flex-shrink-0 h-6 w-6"></i>
           Settings

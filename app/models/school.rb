@@ -33,6 +33,7 @@ class School < ApplicationRecord
   has_many :inventory_transactions, through: :inventory_items
   has_many :transport_routes
   has_many :exams
+  has_many :leave_applications, dependent: :destroy
 
   validates :name, presence: true
   validates :domain, presence: true#, uniqueness: true

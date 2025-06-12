@@ -109,6 +109,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_12_100724) do
     t.datetime "updated_at", null: false
     t.string "leave_type"
     t.string "contact_number"
+    t.integer "approved_by"
+    t.text "rejection_reason"
+    t.integer "approved_by_id"
+    t.index ["approved_by_id"], name: "index_leave_applications_on_approved_by_id"
     t.index ["school_id"], name: "index_leave_applications_on_school_id"
     t.index ["teacher_id"], name: "index_leave_applications_on_teacher_id"
   end
@@ -240,6 +244,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_12_100724) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "features_enabled", default: []
+    t.string "primary_color", default: "#4F46E5"
+    t.string "secondary_color", default: "#818CF8"
+    t.string "accent_color", default: "#C7D2FE"
+    t.string "background_color", default: "#FFFFFF"
+    t.string "text_color", default: "#1F2937"
     t.index ["plan_id"], name: "index_schools_on_plan_id"
   end
 
@@ -401,6 +410,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_12_100724) do
   add_foreign_key "inventory_items", "schools"
   add_foreign_key "inventory_transactions", "inventory_items"
   add_foreign_key "inventory_transactions", "schools"
+  add_foreign_key "leave_applications", "school_owners", column: "approved_by_id"
   add_foreign_key "leave_applications", "schools"
   add_foreign_key "leave_applications", "teachers"
   add_foreign_key "notice_school_classes", "notices"

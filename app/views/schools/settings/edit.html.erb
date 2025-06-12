@@ -1,0 +1,57 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">School Theme Settings</h3>
+        <div class="mt-2 max-w-xl text-sm text-gray-500">
+          <p>Customize the color scheme for your school's interface.</p>
+        </div>
+
+        <%= form_with(model: [:schools, @school], local: true, class: "mt-5 space-y-6") do |f| %>
+          <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+            <div class="sm:col-span-3">
+              <%= f.label :primary_color, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1 flex rounded-md shadow-sm">
+                <%= f.color_field :primary_color, class: "flex-1 min-w-0 block w-full px-3 py-2 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :secondary_color, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1 flex rounded-md shadow-sm">
+                <%= f.color_field :secondary_color, class: "flex-1 min-w-0 block w-full px-3 py-2 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :accent_color, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1 flex rounded-md shadow-sm">
+                <%= f.color_field :accent_color, class: "flex-1 min-w-0 block w-full px-3 py-2 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :background_color, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1 flex rounded-md shadow-sm">
+                <%= f.color_field :background_color, class: "flex-1 min-w-0 block w-full px-3 py-2 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :text_color, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1 flex rounded-md shadow-sm">
+                <%= f.color_field :text_color, class: "flex-1 min-w-0 block w-full px-3 py-2 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-5">
+            <div class="flex justify-end">
+              <%= f.submit "Save Changes", class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div> 
