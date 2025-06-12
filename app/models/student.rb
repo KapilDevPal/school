@@ -20,17 +20,20 @@ class Student < ApplicationRecord
   has_many :student_assignments
   has_many :submitted_assignments, through: :student_assignments, source: :assignment
 
+  has_one :admission_detail, dependent: :destroy
+  accepts_nested_attributes_for :admission_detail
+
   validates :email, presence: true, uniqueness: { scope: :school_id }
   validates :school, presence: true
   validates :admission_number, presence: true, uniqueness: { scope: :school_id }
-  validates :class_section, presence: true
+  # validates :class_section, presence: true
   validates :date_of_birth, presence: true
   validates :first_name, :last_name, presence: true
   validates :roll_number, presence: true, uniqueness: { scope: :school_class_id }
   validates :gender, presence: true, inclusion: { in: %w[male female other] }
   validates :address, presence: true
   validates :parent_name, presence: true
-  validates :parent_phone, presence: true
+  # validates :parent_phone, presence: true
   validates :parent_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   # validates :phone_number, presence: true, format: { with: /\A\+?[\d\s-]+\z/, message: "must be a valid phone number" }
 

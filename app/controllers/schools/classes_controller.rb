@@ -13,7 +13,7 @@ module Schools
     end
 
     def new
-      @class = @school.school_classes.build
+      @school_class = @school.school_classes.build
     end
 
     def create
@@ -26,8 +26,9 @@ module Schools
       end
     end
 
-    def edit
-    end
+     def edit
+        @school_class = @school.school_classes.find(params[:id])
+      end
 
     def update
       if @class.update(class_params)

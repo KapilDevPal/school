@@ -59,7 +59,7 @@ Rails.application.routes.draw do
           end
         end
       end
-      resources :classes
+     resources :classes, controller: 'classes'
       resources :subjects
       resources :exams
       resources :notices
