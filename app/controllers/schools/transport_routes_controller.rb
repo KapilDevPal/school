@@ -1,4 +1,4 @@
-railmodule Schools
+module Schools
   class TransportRoutesController < ApplicationController
     before_action :authenticate_user_or_school_owner!
     before_action :set_transport_route, only: [:show, :edit, :update, :destroy]
