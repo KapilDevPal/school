@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_13_180325) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_13_191239) do
   create_table "admission_details", force: :cascade do |t|
     t.integer "student_id", null: false
     t.string "aadhaar_number"
@@ -228,6 +228,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_13_180325) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.text "permissions"
+    t.boolean "active"
+    t.integer "school_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_roles_on_school_id"
+  end
+
+  create_table "route_stops", force: :cascade do |t|
+    t.integer "transport_route_id", null: false
+    t.string "stop_name"
+    t.integer "stop_order"
+    t.time "arrival_time"
+    t.time "departure_time"
+    t.integer "student_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_route_stops_on_student_id"
+    t.index ["transport_route_id"], name: "index_route_stops_on_transport_route_id"
+  end
+
   create_table "salary_structures", force: :cascade do |t|
     t.integer "school_id", null: false
     t.integer "teacher_id", null: false
@@ -298,6 +321,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_13_180325) do
     t.json "features_enabled", default: []
     t.index ["features_enabled"], name: "index_schools_on_features_enabled"
     t.index ["plan_id"], name: "index_schools_on_plan_id"
+  end
+
+  create_table "staffs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "student_classes", force: :cascade do |t|
@@ -442,8 +470,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_13_180325) do
     t.string "start_point", null: false
     t.string "end_point", null: false
     t.string "status", default: "active"
-    t.integer "driver_id", null: false
-    t.integer "vehicle_id", null: false
+    t.integer "transport_driver_id", null: false
+    t.integer "transport_vehicle_id", null: false
     t.integer "created_by_id", null: false
     t.time "start_time"
     t.time "end_time"
@@ -452,9 +480,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_13_180325) do
     t.datetime "updated_at", null: false
     t.integer "school_id", null: false
     t.index ["created_by_id"], name: "index_transport_routes_on_created_by_id"
-    t.index ["driver_id"], name: "index_transport_routes_on_driver_id"
     t.index ["school_id"], name: "index_transport_routes_on_school_id"
-    t.index ["vehicle_id"], name: "index_transport_routes_on_vehicle_id"
+    t.index ["transport_driver_id"], name: "index_transport_routes_on_transport_driver_id"
+    t.index ["transport_vehicle_id"], name: "index_transport_routes_on_transport_vehicle_id"
   end
 
   create_table "transport_vehicles", force: :cascade do |t|
@@ -529,6 +557,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_13_180325) do
   add_foreign_key "payslips", "salary_structures"
   add_foreign_key "payslips", "schools"
   add_foreign_key "payslips", "teachers"
+  add_foreign_key "roles", "schools"
+  add_foreign_key "route_stops", "students"
+  add_foreign_key "route_stops", "transport_routes"
   add_foreign_key "salary_structures", "schools"
   add_foreign_key "salary_structures", "teachers"
   add_foreign_key "school_classes", "schools"
@@ -555,10 +586,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_13_180325) do
   add_foreign_key "timetables", "subjects"
   add_foreign_key "timetables", "teachers"
   add_foreign_key "transport_drivers", "schools"
-  add_foreign_key "transport_routes", "drivers"
   add_foreign_key "transport_routes", "schools"
+  add_foreign_key "transport_routes", "transport_drivers"
+  add_foreign_key "transport_routes", "transport_vehicles"
   add_foreign_key "transport_routes", "users", column: "created_by_id"
-  add_foreign_key "transport_routes", "vehicles"
   add_foreign_key "transport_vehicles", "schools"
   add_foreign_key "users", "school_classes"
   add_foreign_key "users", "schools"

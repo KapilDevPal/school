@@ -179,6 +179,32 @@
           Leave Applications
         <% end %>
 
+        <% if current_school&.feature_enabled?('staff_management') %>
+          <div class="space-y-1" 
+               data-controller="dropdown"
+               data-dropdown-menu-class="hidden"
+               data-dropdown-expanded-class="rotate-180">
+            <button type="button" 
+                    class="group w-full flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white" 
+                    data-action="click->dropdown#toggle">
+              <i class="fas fa-users mr-3 flex-shrink-0 h-6 w-6"></i>
+              <span class="flex-1">Staff</span>
+              <i class="fas fa-chevron-down ml-3 flex-shrink-0 h-4 w-4 transition-transform duration-200" 
+                 data-dropdown-target="icon"></i>
+            </button>
+            <div class="hidden space-y-1" data-dropdown-target="menu">
+              <%= link_to schools_staff_index_path, class: "group flex items-center pl-11 pr-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_staff_index_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-user-plus mr-3 flex-shrink-0 h-5 w-5"></i>
+                Manage Staff
+              <% end %>
+              <%= link_to schools_roles_path, class: "group flex items-center pl-11 pr-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_roles_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-user-tag mr-3 flex-shrink-0 h-5 w-5"></i>
+                Manage Roles
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
         <%= link_to edit_school_owner_path(current_school_owner), class: "group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(edit_school_owner_path(current_school_owner)) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
           <i class="fas fa-cog mr-3 flex-shrink-0 h-6 w-6"></i>
           Settings

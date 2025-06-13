@@ -89,6 +89,8 @@ Rails.application.routes.draw do
         post :reject
       end
     end
+    resources :roles
+    resources :staff, only: [:index, :new, :create, :edit, :update, :destroy]
   end
 
   # Teacher routes

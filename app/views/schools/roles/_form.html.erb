@@ -1,0 +1,42 @@
+<%= form_with(model: [:schools, @role], local: true, class: "space-y-8 divide-y divide-gray-200") do |f| %>
+  <div class="space-y-8 divide-y divide-gray-200">
+    <div>
+      <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div class="sm:col-span-4">
+          <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= f.text_field :name, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-6">
+          <%= f.label :permissions, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-2 space-y-4">
+            <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4">
+              <% Role.default_permissions.values.flatten.uniq.each do |permission| %>
+                <div class="relative flex items-start">
+                  <div class="flex h-5 items-center">
+                    <%= f.check_box :permissions, 
+                        { multiple: true, class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" }, 
+                        permission, 
+                        nil %>
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <%= f.label "permissions_#{permission}", permission.titleize, class: "font-medium text-gray-700" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-5">
+    <div class="flex justify-end">
+      <%= link_to "Cancel", schools_roles_path, class: "rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+      <%= f.submit class: "ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+    </div>
+  </div>
+<% end %> 

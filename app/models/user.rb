@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  belongs_to :role, optional: true
   belongs_to :school, optional: true
   has_many :notifications, as: :recipient
   has_many :school_owner_schools
@@ -25,50 +26,52 @@ class User < ApplicationRecord
   has_many :student_assignments
   has_many :submitted_assignments, through: :student_assignments, source: :assignment
 
-  enum :role, { admin: 0, teacher: 1, student: 2, accountant: 3, school_owner: 4 }, default: :admin
-
-  # Common validations
-  validates :email, presence: true, uniqueness: { scope: :school_id }
-  validates :role, presence: true
+  validates :email, presence: true, uniqueness: true
   validates :first_name, :last_name, presence: true
-
-  # Teacher-specific validations
-  validates :phone_number, presence: true, format: { with: /\A\+?[\d\s-]+\z/ }, if: :teacher?
-  validates :qualification, presence: true, if: :teacher?
-  validates :experience, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, if: :teacher?
-  validates :specialization, presence: true, if: :teacher?
-
-  # Student-specific validations
-  validates :admission_number, presence: true, uniqueness: { scope: :school_id }, if: :student?
-  validates :date_of_birth, presence: true, if: :student?
-  validates :roll_number, presence: true, uniqueness: { scope: :school_class_id }, if: :student?
-  validates :gender, presence: true, inclusion: { in: %w[male female other] }, if: :student?
-  validates :address, presence: true, if: :student?
-  validates :parent_name, presence: true, if: :student?
-  validates :parent_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, if: :student?
 
   def full_name
     "#{first_name} #{last_name}"
   end
 
+  def has_permission?(permission)
+    return true if role&.permissions&.include?('manage_all')
+    role&.permissions&.include?(permission)
+  end
+
   def admin?
-    role == 'admin'
+    role&.name == 'admin'
   end
 
   def teacher?
-    role == 'teacher'
+    role&.name == 'teacher'
   end
 
   def student?
-    role == 'student'
+    role&.name == 'student'
   end
 
   def accountant?
-    role == 'accountant'
+    role&.name == 'accountant'
   end
 
   def school_owner?
-    role == 'school_owner'
+    role&.name == 'school_owner'
+  end
+
+  def bus_driver?
+    role&.name == 'bus_driver'
+  end
+
+  def security?
+    role&.name == 'security'
+  end
+
+  def sweeper?
+    role&.name == 'sweeper'
+  end
+
+  def peon?
+    role&.name == 'peon'
   end
 
   def current_school
