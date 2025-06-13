@@ -18,6 +18,7 @@ class Plan < ApplicationRecord
     timetable
     notices
     fees
+    transport
   ].freeze
 
   def features

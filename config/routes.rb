@@ -59,7 +59,7 @@ Rails.application.routes.draw do
           end
         end
       end
-     resources :classes, controller: 'classes'
+      resources :classes, controller: 'classes'
       resources :subjects
       resources :exams
       resources :notices
@@ -78,7 +78,8 @@ Rails.application.routes.draw do
     resources :inventory_items do
       resources :inventory_transactions, only: [:new, :create]
     end
-    resources :transport
+    resources :transport_routes, path: 'transport/routes', only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :transport_vehicles, path: 'transport/vehicles', only: [:index, :new, :create, :edit, :update, :destroy]
     resources :calendar
     resources :exams
     resource :module_settings, only: [:show, :update]

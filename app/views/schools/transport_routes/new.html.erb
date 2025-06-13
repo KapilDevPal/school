@@ -1,0 +1,120 @@
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-xl font-semibold text-gray-900">New Transport Route</h1>
+      <p class="mt-2 text-sm text-gray-700">Add a new transport route to your school.</p>
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <%= form_with(model: [:schools, @transport_route], local: true, class: "space-y-8 divide-y divide-gray-200") do |f| %>
+      <div class="space-y-8 divide-y divide-gray-200">
+        <div>
+          <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+            <div class="sm:col-span-3">
+              <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.text_field :name, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :cost, "Monthly Cost (₹)", class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.number_field :cost, min: 0, step: 0.01, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :vehicle_id, "Vehicle", class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.collection_select :vehicle_id, @vehicles, :id, :registration_number, { prompt: "Select a vehicle" }, { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= f.label :driver_id, "Driver", class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= f.collection_select :driver_id, @drivers, :id, :name, { prompt: "Select a driver" }, { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <div class="relative flex items-start">
+                <div class="flex h-5 items-center">
+                  <%= f.check_box :active, class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" %>
+                </div>
+                <div class="ml-3 text-sm">
+                  <%= f.label :active, class: "font-medium text-gray-700" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-8">
+          <div class="sm:flex sm:items-center">
+            <div class="sm:flex-auto">
+              <h3 class="text-lg font-medium leading-6 text-gray-900">Route Stops</h3>
+              <p class="mt-1 text-sm text-gray-500">Add all the stops for this route in order.</p>
+            </div>
+            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+              <button type="button" 
+                      data-action="click->route-stops#addStop"
+                      class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
+                Add Stop
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-6" data-controller="route-stops">
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+              <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Stop Name</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Arrival Time</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Departure Time</th>
+                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                      <span class="sr-only">Actions</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white" data-route-stops-target="stopsList">
+                  <%= f.fields_for :route_stops do |stop_form| %>
+                    <tr class="stop-row">
+                      <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                        <%= stop_form.text_field :stop_name, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+                        <%= stop_form.hidden_field :stop_order %>
+                      </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <%= stop_form.time_field :arrival_time, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+                      </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <%= stop_form.time_field :departure_time, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+                      </td>
+                      <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                        <button type="button" 
+                                class="text-red-600 hover:text-red-900"
+                                data-action="click->route-stops#removeStop">
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-5">
+        <div class="flex justify-end">
+          <%= link_to "Cancel", schools_transport_routes_path, class: "rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+          <%= f.submit class: "ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div> 

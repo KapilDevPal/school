@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_12_100724) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_13_180325) do
   create_table "admission_details", force: :cascade do |t|
     t.integer "student_id", null: false
     t.string "aadhaar_number"
@@ -53,6 +53,33 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_12_100724) do
     t.index ["school_class_id"], name: "index_attendance_records_on_school_class_id"
     t.index ["school_id"], name: "index_attendance_records_on_school_id"
     t.index ["student_id"], name: "index_attendance_records_on_student_id"
+  end
+
+  create_table "drivers", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "license_number", null: false
+    t.string "phone_number", null: false
+    t.string "email", null: false
+    t.string "status", default: "active"
+    t.text "address"
+    t.date "license_expiry_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_drivers_on_email", unique: true
+    t.index ["license_number"], name: "index_drivers_on_license_number", unique: true
+  end
+
+  create_table "drop_points", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "address", null: false
+    t.integer "sequence_number", null: false
+    t.time "estimated_time", null: false
+    t.integer "transport_route_id", null: false
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["transport_route_id", "sequence_number"], name: "index_drop_points_on_transport_route_id_and_sequence_number", unique: true
+    t.index ["transport_route_id"], name: "index_drop_points_on_transport_route_id"
   end
 
   create_table "exam_results", force: :cascade do |t|
@@ -269,6 +296,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_12_100724) do
     t.string "background_color", default: "#FFFFFF"
     t.string "text_color", default: "#1F2937"
     t.json "features_enabled", default: []
+    t.index ["features_enabled"], name: "index_schools_on_features_enabled"
     t.index ["plan_id"], name: "index_schools_on_plan_id"
   end
 
@@ -396,6 +424,52 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_12_100724) do
     t.index ["teacher_id"], name: "index_timetables_on_teacher_id"
   end
 
+  create_table "transport_drivers", force: :cascade do |t|
+    t.integer "school_id", null: false
+    t.string "name"
+    t.string "license_number"
+    t.string "phone"
+    t.string "email"
+    t.string "status"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_transport_drivers_on_school_id"
+  end
+
+  create_table "transport_routes", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "start_point", null: false
+    t.string "end_point", null: false
+    t.string "status", default: "active"
+    t.integer "driver_id", null: false
+    t.integer "vehicle_id", null: false
+    t.integer "created_by_id", null: false
+    t.time "start_time"
+    t.time "end_time"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "school_id", null: false
+    t.index ["created_by_id"], name: "index_transport_routes_on_created_by_id"
+    t.index ["driver_id"], name: "index_transport_routes_on_driver_id"
+    t.index ["school_id"], name: "index_transport_routes_on_school_id"
+    t.index ["vehicle_id"], name: "index_transport_routes_on_vehicle_id"
+  end
+
+  create_table "transport_vehicles", force: :cascade do |t|
+    t.integer "school_id", null: false
+    t.string "name"
+    t.string "registration_number"
+    t.string "vehicle_type"
+    t.integer "capacity"
+    t.string "status"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_transport_vehicles_on_school_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -418,10 +492,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_12_100724) do
     t.index ["school_id"], name: "index_users_on_school_id"
   end
 
+  create_table "vehicles", force: :cascade do |t|
+    t.string "registration_number", null: false
+    t.string "vehicle_type", null: false
+    t.integer "capacity", null: false
+    t.string "status", default: "active"
+    t.string "model"
+    t.string "manufacturer"
+    t.date "registration_expiry_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["registration_number"], name: "index_vehicles_on_registration_number", unique: true
+  end
+
   add_foreign_key "admission_details", "students"
   add_foreign_key "attendance_records", "school_classes"
   add_foreign_key "attendance_records", "schools"
   add_foreign_key "attendance_records", "students"
+  add_foreign_key "drop_points", "transport_routes"
   add_foreign_key "exam_results", "exams"
   add_foreign_key "exam_results", "students"
   add_foreign_key "exam_results", "subjects"
@@ -466,6 +554,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_12_100724) do
   add_foreign_key "timetables", "schools"
   add_foreign_key "timetables", "subjects"
   add_foreign_key "timetables", "teachers"
+  add_foreign_key "transport_drivers", "schools"
+  add_foreign_key "transport_routes", "drivers"
+  add_foreign_key "transport_routes", "schools"
+  add_foreign_key "transport_routes", "users", column: "created_by_id"
+  add_foreign_key "transport_routes", "vehicles"
+  add_foreign_key "transport_vehicles", "schools"
   add_foreign_key "users", "school_classes"
   add_foreign_key "users", "schools"
 end

@@ -1,0 +1,60 @@
+<%= form_with(model: @route, url: @route.new_record? ? create_route_transport_path : update_route_transport_path(@route), local: true) do |f| %>
+  <div class="space-y-6">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div>
+        <%= f.label :name, class: 'block text-sm font-medium text-gray-700' %>
+        <%= f.text_field :name, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500' %>
+      </div>
+
+      <div>
+        <%= f.label :active, class: 'block text-sm font-medium text-gray-700' %>
+        <%= f.check_box :active, class: 'mt-1 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500' %>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div>
+        <%= f.label :start_point, class: 'block text-sm font-medium text-gray-700' %>
+        <%= f.text_field :start_point, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500' %>
+      </div>
+
+      <div>
+        <%= f.label :end_point, class: 'block text-sm font-medium text-gray-700' %>
+        <%= f.text_field :end_point, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500' %>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div>
+        <%= f.label :vehicle_id, 'Vehicle', class: 'block text-sm font-medium text-gray-700' %>
+        <%= f.collection_select :vehicle_id, @vehicles, :id, :registration_number, 
+            { prompt: 'Select a vehicle' }, 
+            { class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500' } %>
+      </div>
+
+      <div>
+        <%= f.label :driver_id, 'Driver', class: 'block text-sm font-medium text-gray-700' %>
+        <%= f.collection_select :driver_id, @drivers, :id, :name, 
+            { prompt: 'Select a driver' }, 
+            { class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500' } %>
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <h3 class="text-lg font-medium text-gray-900">Route Stops</h3>
+      <div id="route-stops" class="mt-4 space-y-4">
+        <%= f.fields_for :route_stops do |stop_form| %>
+          <%= render 'route_stop_fields', f: stop_form %>
+        <% end %>
+      </div>
+      <%= link_to_add_association 'Add Stop', f, :route_stops, 
+          class: 'mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700',
+          data: { association_insertion_node: '#route-stops', association_insertion_method: 'append' } %>
+    </div>
+
+    <div class="flex justify-end space-x-3">
+      <%= link_to 'Cancel', transport_path, class: 'inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50' %>
+      <%= f.submit class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700' %>
+    </div>
+  </div>
+<% end %> 

@@ -31,9 +31,11 @@ class School < ApplicationRecord
   has_many :payslips
   has_many :inventory_items
   has_many :inventory_transactions, through: :inventory_items
-  has_many :transport_routes
+  has_many :transport_routes, dependent: :destroy
   has_many :exams
   has_many :leave_applications, dependent: :destroy
+  has_many :transport_vehicles, dependent: :destroy
+  has_many :transport_drivers, dependent: :destroy
 
   validates :name, presence: true
   validates :domain, presence: true#, uniqueness: true
@@ -61,6 +63,14 @@ class School < ApplicationRecord
   def disable_feature(feature)
     return unless feature_enabled?(feature)
     self.features_enabled = features_enabled - [feature.to_s]
+  end
+
+  def vehicles
+    transport_vehicles
+  end
+
+  def drivers
+    transport_drivers
   end
 
   private

@@ -1,0 +1,30 @@
+<div class="nested-fields bg-gray-50 p-4 rounded-lg">
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div>
+      <%= f.label :stop_name, class: 'block text-sm font-medium text-gray-700' %>
+      <%= f.text_field :stop_name, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500' %>
+    </div>
+
+    <div>
+      <%= f.label :stop_order, class: 'block text-sm font-medium text-gray-700' %>
+      <%= f.number_field :stop_order, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500' %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
+    <div>
+      <%= f.label :arrival_time, class: 'block text-sm font-medium text-gray-700' %>
+      <%= f.time_field :arrival_time, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500' %>
+    </div>
+
+    <div>
+      <%= f.label :departure_time, class: 'block text-sm font-medium text-gray-700' %>
+      <%= f.time_field :departure_time, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500' %>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= link_to_remove_association 'Remove Stop', f, 
+        class: 'inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200' %>
+  </div>
+</div> 
