@@ -8,17 +8,23 @@ class Schools::StaffController < ApplicationController
     @staff = current_school.users.where.not(role_id: nil).includes(:role).order(:first_name)
   end
 
+  def show
+  end
+
   def new
     @staff = current_school.users.build
   end
 
   def create
     @staff = current_school.users.build(staff_params)
+    @staff.password = SecureRandom.hex(8) # Generate a random password
 
     if @staff.save
+      # Send welcome email with password
+      StaffMailer.welcome_email(@staff, @staff.password).deliver_later
       redirect_to schools_staff_index_path, notice: 'Staff member was successfully created.'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -29,7 +35,7 @@ class Schools::StaffController < ApplicationController
     if @staff.update(staff_params)
       redirect_to schools_staff_index_path, notice: 'Staff member was successfully updated.'
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

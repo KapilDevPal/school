@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Welcome to <%= @school.name %>, <%= @staff.first_name %>!</h1>
+    
+    <p>Your account has been created. Here are your login details:</p>
+    
+    <ul>
+      <li><strong>Email:</strong> <%= @staff.email %></li>
+      <li><strong>Temporary Password:</strong> <%= @password %></li>
+    </ul>
+    
+    <p>For security reasons, please change your password after your first login.</p>
+    
+    <p>You can log in at: <%= link_to "Login Page", new_user_session_url %></p>
+    
+    <p>If you have any questions, please contact your school administrator.</p>
+    
+    <p>Best regards,<br>
+    The <%= @school.name %> Team</p>
+  </body>
+</html> 

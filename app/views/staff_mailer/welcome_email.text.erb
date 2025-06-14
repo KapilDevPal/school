@@ -1,0 +1,15 @@
+Welcome to <%= @school.name %>, <%= @staff.first_name %>!
+
+Your account has been created. Here are your login details:
+
+Email: <%= @staff.email %>
+Temporary Password: <%= @password %>
+
+For security reasons, please change your password after your first login.
+
+You can log in at: <%= new_user_session_url %>
+
+If you have any questions, please contact your school administrator.
+
+Best regards,
+The <%= @school.name %> Team 

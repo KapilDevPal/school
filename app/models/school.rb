@@ -36,6 +36,7 @@ class School < ApplicationRecord
   has_many :leave_applications, dependent: :destroy
   has_many :transport_vehicles, dependent: :destroy
   has_many :transport_drivers, dependent: :destroy
+  has_many :roles, dependent: :destroy
 
   validates :name, presence: true
   validates :domain, presence: true#, uniqueness: true

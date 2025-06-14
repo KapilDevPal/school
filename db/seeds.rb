@@ -69,7 +69,7 @@ begin
   Role.default_roles.each do |role_name, permissions|
     Role.create!(
       name: role_name,
-      permissions: permissions,
+      permissions: permissions.presence || [],
       school: school1
     )
   end
