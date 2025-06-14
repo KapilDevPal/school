@@ -7,6 +7,10 @@ class Role < ApplicationRecord
 
   before_validation :set_default_permissions, on: :create
 
+  scope :active, -> { where(active: true) }
+
+  attribute :permissions, :json
+
   AVAILABLE_PERMISSIONS = %w[
     manage_all
     manage_students

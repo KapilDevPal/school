@@ -4,7 +4,7 @@ class Schools::RolesController < ApplicationController
   before_action :check_feature_enabled
 
   def index
-    @roles = current_school.roles.active.order(:name)
+    @roles = current_school.roles.where(active: [true, nil]).order(:name)
   end
 
   def new
