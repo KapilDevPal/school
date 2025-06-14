@@ -26,16 +26,20 @@
             </div>
 
             <div class="sm:col-span-3">
-              <%= f.label :vehicle_id, "Vehicle", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.label :transport_vehicle_id, "Vehicle", class: "block text-sm font-medium text-gray-700" %>
               <div class="mt-1">
-                <%= f.collection_select :vehicle_id, @vehicles, :id, :registration_number, { prompt: "Select a vehicle" }, { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+                <%= f.collection_select :transport_vehicle_id, @vehicles, :id, :registration_number, 
+                    { prompt: "Select a vehicle" }, 
+                    { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
               </div>
             </div>
 
             <div class="sm:col-span-3">
-              <%= f.label :driver_id, "Driver", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.label :transport_driver_id, "Driver", class: "block text-sm font-medium text-gray-700" %>
               <div class="mt-1">
-                <%= f.collection_select :driver_id, @drivers, :id, :name, { prompt: "Select a driver" }, { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+                <%= f.collection_select :transport_driver_id, @drivers, :id, :name, 
+                    { prompt: "Select a driver" }, 
+                    { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
               </div>
             </div>
 

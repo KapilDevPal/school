@@ -51,7 +51,7 @@ module Schools
 
     def transport_route_params
       params.require(:transport_route).permit(
-        :name, :cost, :vehicle_id, :driver_id, :active,
+        :name, :cost, :transport_vehicle_id, :transport_driver_id, :active,
         route_stops_attributes: [:id, :stop_name, :stop_order, :arrival_time, :departure_time, :_destroy]
       )
     end

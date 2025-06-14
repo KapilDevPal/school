@@ -137,6 +137,10 @@
                 <i class="fas fa-truck mr-3 flex-shrink-0 h-5 w-5"></i>
                 Vehicles
               <% end %>
+              <%= link_to schools_transport_drivers_path, class: "group flex items-center pl-11 pr-2 py-2 text-sm font-medium rounded-md #{current_page?(schools_transport_drivers_path) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}" do %>
+                <i class="fas fa-user-tie mr-3 flex-shrink-0 h-5 w-5"></i>
+                Drivers
+              <% end %>
             </div>
           </div>
         <% end %>
