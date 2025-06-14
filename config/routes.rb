@@ -80,6 +80,7 @@ Rails.application.routes.draw do
     end
     resources :transport_routes, path: 'transport/routes', only: [:index, :new, :create, :edit, :update, :destroy]
     resources :transport_vehicles, path: 'transport/vehicles', only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :transport_drivers
     resources :calendar
     resources :exams
     resource :module_settings, only: [:show, :update]

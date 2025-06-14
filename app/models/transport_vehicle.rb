@@ -7,7 +7,7 @@ class TransportVehicle < ApplicationRecord
   validates :vehicle_type, presence: true
   validates :capacity, presence: true, numericality: { greater_than: 0 }
 
-  scope :active, -> { where(status: 'active') }
+  scope :active, -> { where(active: true) }
 
   enum :vehicle_type, {
     bus: 0,

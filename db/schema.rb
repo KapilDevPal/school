@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_14_000001) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_14_122701) do
   create_table "admission_details", force: :cascade do |t|
     t.integer "student_id", null: false
     t.string "aadhaar_number"
@@ -230,7 +230,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_000001) do
     t.integer "stop_order"
     t.time "arrival_time"
     t.time "departure_time"
-    t.integer "student_id", null: false
+    t.integer "student_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["student_id"], name: "index_route_stops_on_student_id"
@@ -455,6 +455,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_000001) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "school_id", null: false
+    t.decimal "cost", precision: 10, scale: 2, default: "0.0"
     t.index ["school_id"], name: "index_transport_routes_on_school_id"
     t.index ["transport_driver_id"], name: "index_transport_routes_on_transport_driver_id"
     t.index ["transport_vehicle_id"], name: "index_transport_routes_on_transport_vehicle_id"
