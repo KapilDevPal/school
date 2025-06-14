@@ -22,7 +22,6 @@ module Schools
 
     def create
       @transport_route = current_school.transport_routes.build(transport_route_params)
-
       if @transport_route.save
         redirect_to schools_transport_routes_path, notice: 'Transport route was successfully created.'
       else
@@ -51,7 +50,8 @@ module Schools
 
     def transport_route_params
       params.require(:transport_route).permit(
-        :name, :cost, :transport_vehicle_id, :transport_driver_id, :active,
+        :name, :cost, :start_point, :end_point, :transport_vehicle_id, 
+        :transport_driver_id, :active,
         route_stops_attributes: [:id, :stop_name, :stop_order, :arrival_time, :departure_time, :_destroy]
       )
     end

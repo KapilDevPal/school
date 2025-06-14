@@ -1,0 +1,5 @@
+class AddCostToTransportRoutes < ActiveRecord::Migration[7.0]
+  def change
+    add_column :transport_routes, :cost, :decimal, precision: 10, scale: 2, default: 0
+  end
+end

@@ -1,0 +1,173 @@
+<%= form_with(model: [:schools, transport_route], class: "space-y-8 divide-y divide-gray-200") do |f| %>
+  <div class="space-y-8 divide-y divide-gray-200">
+    <div>
+      <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div class="sm:col-span-3">
+          <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= f.text_field :name, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= f.label :cost, "Monthly Cost", class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= f.number_field :cost, step: :any, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= f.label :start_point, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= f.text_field :start_point, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= f.label :end_point, class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= f.text_field :end_point, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= f.label :transport_vehicle_id, "Vehicle", class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= f.collection_select :transport_vehicle_id, 
+                @vehicles, 
+                :id, 
+                :registration_number, 
+                { prompt: 'Select a vehicle' }, 
+                { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= f.label :transport_driver_id, "Driver", class: "block text-sm font-medium text-gray-700" %>
+          <div class="mt-1">
+            <%= f.collection_select :transport_driver_id, 
+                @drivers, 
+                :id, 
+                :name, 
+                { prompt: 'Select a driver' }, 
+                { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <div class="relative flex items-start">
+            <div class="flex h-5 items-center">
+              <%= f.check_box :active, class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" %>
+            </div>
+            <div class="ml-3 text-sm">
+              <%= f.label :active, class: "font-medium text-gray-700" %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Route Stops</h3>
+        <p class="mt-1 text-sm text-gray-500">Add stops along the route.</p>
+
+        <div id="route-stops" class="mt-4 space-y-4">
+          <%= f.fields_for :route_stops do |stop_form| %>
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+              <div class="sm:col-span-2">
+                <%= stop_form.label :stop_name, "Stop Name", class: "block text-sm font-medium text-gray-700" %>
+                <div class="mt-1">
+                  <%= stop_form.text_field :stop_name, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+                </div>
+              </div>
+
+              <div class="sm:col-span-1">
+                <%= stop_form.label :stop_order, "Order", class: "block text-sm font-medium text-gray-700" %>
+                <div class="mt-1">
+                  <%= stop_form.number_field :stop_order, min: 1, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+                </div>
+              </div>
+
+              <div class="sm:col-span-1">
+                <%= stop_form.label :arrival_time, "Arrival Time", class: "block text-sm font-medium text-gray-700" %>
+                <div class="mt-1">
+                  <%= stop_form.time_field :arrival_time, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+                </div>
+              </div>
+
+              <div class="sm:col-span-1">
+                <%= stop_form.label :departure_time, "Departure Time", class: "block text-sm font-medium text-gray-700" %>
+                <div class="mt-1">
+                  <%= stop_form.time_field :departure_time, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+                </div>
+              </div>
+
+              <div class="sm:col-span-1 flex items-end">
+                <%= stop_form.hidden_field :_destroy %>
+                <button type="button" class="text-red-600 hover:text-red-900" onclick="this.closest('.grid').remove()">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <button type="button" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" onclick="addStop()">
+          Add Stop
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-5">
+    <div class="flex justify-end">
+      <%= link_to "Cancel", schools_transport_routes_path, class: "rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+      <%= f.submit class: "ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+function addStop() {
+  const stopsContainer = document.getElementById('route-stops');
+  const stopCount = stopsContainer.children.length;
+  const template = `
+    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+      <div class="sm:col-span-2">
+        <label class="block text-sm font-medium text-gray-700">Stop Name</label>
+        <div class="mt-1">
+          <input type="text" name="transport_route[route_stops_attributes][${stopCount}][stop_name]" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+      </div>
+
+      <div class="sm:col-span-1">
+        <label class="block text-sm font-medium text-gray-700">Order</label>
+        <div class="mt-1">
+          <input type="number" name="transport_route[route_stops_attributes][${stopCount}][stop_order]" value="${stopCount + 1}" min="1" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+      </div>
+
+      <div class="sm:col-span-1">
+        <label class="block text-sm font-medium text-gray-700">Arrival Time</label>
+        <div class="mt-1">
+          <input type="time" name="transport_route[route_stops_attributes][${stopCount}][arrival_time]" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+      </div>
+
+      <div class="sm:col-span-1">
+        <label class="block text-sm font-medium text-gray-700">Departure Time</label>
+        <div class="mt-1">
+          <input type="time" name="transport_route[route_stops_attributes][${stopCount}][departure_time]" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+      </div>
+
+      <div class="sm:col-span-1 flex items-end">
+        <input type="hidden" name="transport_route[route_stops_attributes][${stopCount}][_destroy]" value="0">
+        <button type="button" class="text-red-600 hover:text-red-900" onclick="this.closest('.grid').remove()">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  `;
+  stopsContainer.insertAdjacentHTML('beforeend', template);
+}
+</script> 
