@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_13_191239) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_13_193548) do
   create_table "admission_details", force: :cascade do |t|
     t.integer "student_id", null: false
     t.string "aadhaar_number"
@@ -514,6 +514,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_13_191239) do
     t.string "admission_number"
     t.string "class_section"
     t.date "date_of_birth"
+    t.string "qualification"
+    t.integer "experience"
+    t.string "specialization"
+    t.integer "role_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["school_class_id"], name: "index_users_on_school_class_id"

@@ -19,6 +19,7 @@ class Plan < ApplicationRecord
     notices
     fees
     transport
+    staff_management
   ].freeze
 
   def features

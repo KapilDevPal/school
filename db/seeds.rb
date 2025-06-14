@@ -16,6 +16,7 @@ begin
   School.destroy_all
   Plan.destroy_all
   User.destroy_all
+  Role.destroy_all
 rescue => e
   puts "Error cleaning database: #{e.message}"
 end
@@ -32,7 +33,7 @@ begin
   premium_plan = Plan.create!(
     name: 'Premium',
     price: 199.99,
-    features_enabled: ['students', 'teachers', 'classes', 'exams', 'finance', 'library', 'transport', 'attendance', 'timetable', 'notices', 'fees']
+    features_enabled: ['students', 'teachers', 'classes', 'exams', 'finance', 'library', 'transport', 'attendance', 'timetable', 'notices', 'fees', 'staff_management']
   )
 rescue => e
   puts "Error creating plans: #{e.message}"
@@ -47,7 +48,7 @@ begin
     domain: 'stmarys.edu',
     plan: premium_plan,
     subscription_ends_at: 1.year.from_now,
-    features_enabled: ['students', 'teachers', 'classes', 'exams', 'finance', 'library']
+    features_enabled: ['students', 'teachers', 'classes', 'exams', 'finance', 'library', 'staff_management']
   )
 
   school2 = School.create!(
@@ -59,6 +60,21 @@ begin
   )
 rescue => e
   puts "Error creating schools: #{e.message}"
+  raise e
+end
+
+# Create Roles
+puts "Creating roles..."
+begin
+  Role.default_roles.each do |role_name, permissions|
+    Role.create!(
+      name: role_name,
+      permissions: permissions,
+      school: school1
+    )
+  end
+rescue => e
+  puts "Error creating roles: #{e.message}"
   raise e
 end
 
@@ -85,23 +101,25 @@ end
 
 # Create Admin Users
 puts "Creating admin users..."
+admin_role = Role.find_by(name: 'admin', school: school1)
 admin_user = User.create!(
   first_name: "Admin",
   last_name: "User",
   email: "admin@school.com",
   password: "admin123",
-  role: :admin,
+  role: admin_role,
   school: school1
 )
 
 # Create Teachers
 puts "Creating teachers..."
+teacher_role = Role.find_by(name: 'teacher', school: school1)
 user1 = User.create!(
   first_name: "John",
   last_name: "Doe",
   email: "john.doe@school.com",
   password: "teacher123",
-  role: :teacher,
+  role: teacher_role,
   school: school1
 )
 
@@ -123,7 +141,7 @@ user2 = User.create!(
   last_name: "Smith",
   email: "jane.smith@school.com",
   password: "teacher123",
-  role: :teacher,
+  role: teacher_role,
   school: school1
 )
 
@@ -168,12 +186,13 @@ end
 
 # Create Students
 puts "Creating students..."
+student_role = Role.find_by(name: 'student', school: school1)
 user3 = User.create!(
   first_name: "Alice",
   last_name: "Johnson",
   email: "alice.johnson@school.com",
   password: "student123",
-  role: :student,
+  role: student_role,
   school: school1
 )
 
@@ -202,7 +221,7 @@ user4 = User.create!(
   last_name: "Wilson",
   email: "bob.wilson@school.com",
   password: "student123",
-  role: :student,
+  role: student_role,
   school: school1
 )
 
