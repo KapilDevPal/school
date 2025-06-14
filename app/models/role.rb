@@ -3,7 +3,6 @@ class Role < ApplicationRecord
   has_many :users
 
   validates :name, presence: true, uniqueness: { scope: :school_id }
-  validates :permissions, presence: true
 
   before_validation :set_default_permissions, on: :create
 
@@ -45,6 +44,7 @@ class Role < ApplicationRecord
   private
 
   def set_default_permissions
-    self.permissions ||= Role.default_roles[name] || []
+    return if permissions.present?
+    self.permissions = self.class.default_roles[name] || []
   end
 end 
