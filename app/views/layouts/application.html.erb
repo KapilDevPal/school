@@ -17,7 +17,7 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= javascript_include_tag "application", type: "module" %>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   </head>
 
@@ -26,9 +26,13 @@
       <%= render "shared/navbar" %>
       
       <div class="flex h-[calc(100vh-4rem)]">
-        <div class="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
-          <%= render "shared/sidebar" %>
-        </div>
+        <% if school_owner_signed_in? && !current_page?(root_path) && !current_page?(new_school_owner_session_path) && !current_page?(new_school_owner_registration_path) %>
+          <div class="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
+            <div class="flex min-h-0 flex-1 flex-col overflow-y-auto bg-gray-800">
+              <%= render "shared/sidebar" %>
+            </div>
+          </div>
+        <% end %>
         
         <div class="lg:pl-64 flex flex-col flex-1">
           <main class="flex-1 pt-20 pb-8 px-4 sm:px-6 lg:px-8">

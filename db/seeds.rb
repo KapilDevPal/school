@@ -102,7 +102,8 @@ user1 = User.create!(
   email: "john.doe@school.com",
   password: "teacher123",
   role: :teacher,
-  school: school1
+  school: school1,
+  phone_number: "+1234567890"
 )
 
 teacher1 = Teacher.create!(
@@ -124,7 +125,8 @@ user2 = User.create!(
   email: "jane.smith@school.com",
   password: "teacher123",
   role: :teacher,
-  school: school1
+  school: school1,
+  phone_number: "+1234567891"
 )
 
 teacher2 = Teacher.create!(

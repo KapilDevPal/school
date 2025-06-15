@@ -16,9 +16,14 @@ class ApplicationController < ActionController::Base
     return if devise_controller?
     
     if controller_path.start_with?('schools/')
-      authenticate_school_owner!
-      unless current_school_owner&.schools&.include?(current_school)
+      unless current_school_owner
+        redirect_to new_school_owner_session_path, alert: 'You need to sign in or sign up before continuing.'
+        return
+      end
+      
+      unless current_school_owner.schools.include?(current_school)
         redirect_to school_owner_path(current_school_owner), alert: 'Please select a school to access this page.'
+        return
       end
     elsif controller_path.start_with?('admin/')
       authenticate_user!
@@ -26,11 +31,13 @@ class ApplicationController < ActionController::Base
       authenticate_user!
       unless current_user.teacher?
         redirect_to root_path, alert: 'You do not have permission to access this page.'
+        return
       end
     elsif controller_path.start_with?('student/')
       authenticate_user!
       unless current_user.student?
         redirect_to root_path, alert: 'You do not have permission to access this page.'
+        return
       end
     else
       unless user_signed_in? || school_owner_signed_in?
@@ -39,6 +46,7 @@ class ApplicationController < ActionController::Base
         else
           redirect_to new_user_session_path, alert: 'Please sign in to access this page.'
         end
+        return
       end
     end
   end
@@ -58,11 +66,5 @@ class ApplicationController < ActionController::Base
 
   def feature_enabled?(feature)
     current_school&.features_enabled&.include?(feature.to_s)
-  end
-
-  def authenticate_school_owner!
-    unless current_school_owner
-      redirect_to new_school_owner_session_path, alert: 'You need to sign in or sign up before continuing.'
-    end
   end
 end

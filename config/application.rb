@@ -23,5 +23,10 @@ module OpenSchool
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Configure JavaScript modules
+    config.assets.configure do |env|
+      env.content_types.register('application/javascript', extensions: ['.js', '.mjs'])
+    end
   end
 end
