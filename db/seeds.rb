@@ -83,6 +83,12 @@ rescue => e
   raise e
 end
 
+# Create Roles
+puts "Creating roles..."
+admin_role   = Role.create!(name: "admin", school: school1)
+teacher_role = Role.create!(name: "teacher", school: school1)
+student_role = Role.create!(name: "student", school: school1)
+
 # Create Admin Users
 puts "Creating admin users..."
 admin_user = User.create!(
@@ -90,7 +96,7 @@ admin_user = User.create!(
   last_name: "User",
   email: "admin@school.com",
   password: "admin123",
-  role: :admin,
+  role: admin_role,
   school: school1
 )
 
@@ -101,7 +107,7 @@ user1 = User.create!(
   last_name: "Doe",
   email: "john.doe@school.com",
   password: "teacher123",
-  role: :teacher,
+  role: teacher_role,
   school: school1,
   phone_number: "+1234567890"
 )
@@ -124,7 +130,7 @@ user2 = User.create!(
   last_name: "Smith",
   email: "jane.smith@school.com",
   password: "teacher123",
-  role: :teacher,
+  role: teacher_role,
   school: school1,
   phone_number: "+1234567891"
 )
@@ -175,7 +181,7 @@ user3 = User.create!(
   last_name: "Johnson",
   email: "alice.johnson@school.com",
   password: "student123",
-  role: :student,
+  role: student_role,
   school: school1
 )
 
@@ -204,7 +210,7 @@ user4 = User.create!(
   last_name: "Wilson",
   email: "bob.wilson@school.com",
   password: "student123",
-  role: :student,
+  role: student_role,
   school: school1
 )
 

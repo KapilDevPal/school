@@ -5,6 +5,8 @@ if schools.empty?
   puts "No schools found! Cannot create teachers."
 else
   schools.each do |school|
+    # Find or create the teacher role for this school
+    teacher_role = Role.find_or_create_by!(name: 'teacher', school: school)
     5.times do
       # Create user first
       user = User.create!(
@@ -12,7 +14,7 @@ else
         last_name: Faker::Name.last_name,
         email: Faker::Internet.unique.email,
         password: 'password123',
-        role: :teacher,
+        role: teacher_role,
         school: school
       )
 
