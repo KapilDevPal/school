@@ -48,6 +48,12 @@ Rails.application.routes.draw do
 
   # School Owner routes
   namespace :schools do
+    get "transport_drivers/index"
+    get "transport_drivers/new"
+    get "transport_drivers/create"
+    get "transport_drivers/edit"
+    get "transport_drivers/update"
+    get "transport_drivers/destroy"
     root to: 'dashboard#index'
     resources :schools do
       resources :students
@@ -80,6 +86,7 @@ Rails.application.routes.draw do
     end
     resources :transport_routes, path: 'transport/routes', only: [:index, :new, :create, :edit, :update, :destroy]
     resources :transport_vehicles, path: 'transport/vehicles', only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :transport_drivers, path: 'transport/drivers', only: [:index, :new, :create, :edit, :update, :destroy]
     resources :calendar
     resources :exams
     resource :module_settings, only: [:show, :update]

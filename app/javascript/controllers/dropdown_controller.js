@@ -1,24 +1,26 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["menu", "icon"]
+  static targets = ["menu", "button"]
   
   connect() {
-    console.log("Dropdown controller connected")
-    // Initialize menu state
-    this.menuTarget.classList.add(this.menuClass)
+    // Close dropdown when clicking outside
+    document.addEventListener("click", this.handleClickOutside.bind(this))
   }
 
-  toggle() {
-    console.log("Toggle clicked")
-    console.log("Menu target:", this.menuTarget)
-    console.log("Icon target:", this.iconTarget)
-    
-    // Toggle menu visibility
-    this.menuTarget.classList.toggle(this.menuClass)
-    
-    // Toggle icon rotation
-    this.iconTarget.classList.toggle(this.expandedClass)
+  disconnect() {
+    document.removeEventListener("click", this.handleClickOutside.bind(this))
+  }
+
+  toggle(event) {
+    event.stopPropagation()
+    this.menuTarget.classList.toggle("hidden")
+  }
+
+  handleClickOutside(event) {
+    if (!this.element.contains(event.target)) {
+      this.menuTarget.classList.add("hidden")
+    }
   }
 
   get menuClass() {

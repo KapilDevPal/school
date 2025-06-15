@@ -1,6 +1,5 @@
 module Schools
   class ExamsController < ApplicationController
-    before_action :authenticate_school_owner!
     before_action :check_feature_enabled
     before_action :set_exam, only: [:show, :edit, :update, :destroy]
 
@@ -54,6 +53,7 @@ module Schools
     def check_feature_enabled
       unless feature_enabled?(:exams)
         redirect_to root_path, alert: 'Exams feature is not enabled for this school.'
+        return
       end
     end
   end
